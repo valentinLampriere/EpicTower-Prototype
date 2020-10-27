@@ -9,6 +9,7 @@ public class EnemiesManager : MonoBehaviour
 
     [SerializeField] private Transform Destination;
 
+    // Called on the "Run" button
     public void ThrowNextWave() {
         waves[0].Init(transform.position, Destination.position);
 
