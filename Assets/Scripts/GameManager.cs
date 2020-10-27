@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     {
         grid = GetComponent<Grid>();
         roomController = GetComponent<RoomController>();
+
         InitTowerRooms();
     }
 
@@ -32,7 +33,9 @@ public class GameManager : MonoBehaviour
 
         foreach (Room room in towerRooms)
         {
-            room.transform.position = grid.SnapToGrid(room.transform.position);
+            Vector3 snpPos = grid.SnapToGrid(room.transform.position);
+            room.transform.position = snpPos;
+            grid.AddRoomInGrid(snpPos, room);
         }
     }
 }

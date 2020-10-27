@@ -8,6 +8,7 @@ public class Grid : MonoBehaviour
     [SerializeField] private int nbCellsWidth = 0;
     [SerializeField] private int nbCellsHeight = 0;
     [SerializeField] private float cellsSize = 1f;
+    [SerializeField] private GameObject test = null;
 
     public Dictionary<Vector3, Tuple<Room, bool>> DicCells { get; private set; }
 
@@ -32,6 +33,36 @@ public class Grid : MonoBehaviour
         }
     }
 
+    bool IsVerticeRoomCell(Vector3 cellPos, Vector3 roomCenter, Room room)
+    {
+        return (cellPos.x == (roomCenter.x - room.Width / 2) || cellPos.x == (roomCenter.x + (room.Width / 2) - 1)
+            && (cellPos.y == (roomCenter.y - room.Height / 2) || cellPos.y == (roomCenter.y + (room.Height / 2) - 1)));
+    }
+
+    public void AddRoomInGrid(Vector3 roomCenter, Room room)
+    {
+        for (float x = roomCenter.x - room.Width / 2 ; x < roomCenter.x + room.Width / 2; x += cellsSize)
+        {
+            for (float y = roomCenter.y - room.Height / 2; y < roomCenter.y + room.Height / 2; y += cellsSize)
+            {
+                Vector3 cellPos = new Vector3(x, y, 0);
+
+                if(DicCells.ContainsKey(cellPos))
+                {
+                    DicCells[cellPos] = new Tuple<Room, bool>(room, IsVerticeRoomCell(cellPos, roomCenter, room));
+                    if(IsVerticeRoomCell(cellPos, roomCenter, room))
+                    {
+                        Instantiate(test, cellPos, Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    Debug.Log("No key " + cellPos + " in grid");
+                }
+            }
+        }
+    }
+
     public Vector3 SnapToGrid(Vector3 position)
     {
         Vector3 snpPos = new Vector3(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y), 0);
@@ -42,7 +73,6 @@ public class Grid : MonoBehaviour
         }
         else
         {
-            Debug.Log("No key at position : " + snpPos);
             return Vector3.zero;
         }
     }

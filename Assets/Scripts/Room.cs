@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public float Width { get; private set; }
-    public float Height { get; private set; }
+    public float Width;
+    public float Height;
 
     // Start is called before the first frame update
     void Start()
