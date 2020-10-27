@@ -35,7 +35,7 @@ public class Grid : MonoBehaviour
 
     bool IsVerticeRoomCell(Vector3 cellPos, Vector3 roomCenter, Room room)
     {
-        return (cellPos.x == (roomCenter.x - room.Width / 2) || cellPos.x == (roomCenter.x + (room.Width / 2) - 1)
+        return ((cellPos.x == (roomCenter.x - room.Width / 2) || cellPos.x == (roomCenter.x + (room.Width / 2) - 1))
             && (cellPos.y == (roomCenter.y - room.Height / 2) || cellPos.y == (roomCenter.y + (room.Height / 2) - 1)));
     }
 
