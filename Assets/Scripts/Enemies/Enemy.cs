@@ -9,30 +9,66 @@ public abstract class Enemy : MonoBehaviour {
 
     public NavMeshAgent Agent { get; set; }
 
-    protected virtual void Awake() {
+    [SerializeField]
+    private float Health = 200f;
+    private float oldSpeed = 0f;
+
+    protected virtual void Awake()
+    {
         Agent = GetComponent<NavMeshAgent>();
     }
-    protected virtual void Start() {
+
+    protected virtual void Start()
+    {
         Agent = GetComponent<NavMeshAgent>();
     }
-    public void Init(float speed) {
-        Agent.speed = speed;
-        Agent.SetDestination(Destination);
-    }
-    protected virtual void Update() {
-        if (HasReachedEnd()) {
+
+    protected virtual void Update()
+    {
+        if (HasReachedEnd() || Health <= 0) {
             Destroy(gameObject);
         }
     }
 
-    protected bool HasReachedEnd() {
-        if (!Agent.pathPending) {
-            if (Agent.remainingDistance <= Agent.stoppingDistance) {
-                if (Agent.hasPath || Agent.velocity.sqrMagnitude < 1f) {
+    protected bool HasReachedEnd()
+    {
+        if (!Agent.pathPending)
+        {
+            if (Agent.remainingDistance <= Agent.stoppingDistance)
+            {
+                if (Agent.hasPath || Agent.velocity.sqrMagnitude < 1f)
+                {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public void Init(float speed) {
+        Agent.speed = speed;
+        Agent.SetDestination(Destination);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Health -= damage;
+    }
+
+    public void ChangeSpeed(float newSpeed)
+    {
+        oldSpeed = Agent.speed;
+        Agent.speed = newSpeed;
+    }
+
+    public void AffectSpeed(float incomingMultiplier)
+    {
+        oldSpeed = Agent.speed;
+        Agent.speed *= incomingMultiplier;
+    }
+
+    public void ReverseSpeed()
+    {
+        Agent.speed = oldSpeed;
     }
 }
