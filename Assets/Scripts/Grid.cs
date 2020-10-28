@@ -32,24 +32,24 @@ public class Grid : MonoBehaviour
         }
     }
 
-    bool IsPossibleNeighbour(List<Room> neighbourRooms)
-    {
-        while(neighbourRooms.Count > 0)
-        {
-            Room crtRoom = neighbourRooms[0];
-            neighbourRooms.RemoveAt(0);
+    //bool IsPossibleNeighbour(List<Room> neighbourRooms)
+    //{
+    //    while(neighbourRooms.Count > 0)
+    //    {
+    //        Room crtRoom = neighbourRooms[0];
+    //        neighbourRooms.RemoveAt(0);
 
-            foreach (Room room in neighbourRooms)
-            {
-                if (crtRoom.Equals(room))
-                {
-                    return true;
-                }
-            }
-        }
+    //        foreach (Room room in neighbourRooms)
+    //        {
+    //            if (crtRoom.Equals(room))
+    //            {
+    //                return true;
+    //            }
+    //        }
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
     //bool IsVerticeRoomCell(Vector3 cellPos, Vector3 roomCenter, Room room)
     //{
@@ -67,6 +67,7 @@ public class Grid : MonoBehaviour
 
                 if(DicCells.ContainsKey(cellPos))
                 {
+                    room.CenterPosition = roomCenter;
                     DicCells[cellPos] = room;
                 }
                 else
@@ -106,47 +107,66 @@ public class Grid : MonoBehaviour
         // For each edge of the room
         for (float x = roomCenter.x - (room.Width / 2) - 1; x <= roomCenter.x + (room.Width / 2); x += room.Width + 1)
         {
-            // Check if at least 2 edge cells is neighboring a same room
-            List<Room> neighbourRooms = new List<Room>();
-
-            for (float y = roomCenter.y - (room.Height / 2); y < roomCenter.y + (room.Height / 2); y += cellsSize)
+            // Check if there is a non null room in the neighbourhood
+            for (float y = roomCenter.y - (room.Height / 2) + 1; y < roomCenter.y + (room.Height / 2) - 1; y += cellsSize)
             {
                 Vector3 cellPos = new Vector3(x, y, 0);
 
                 if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null)
                 {
-                    neighbourRooms.Add(DicCells[cellPos]);
+                    return true;
                 }
-            }
-
-            if(IsPossibleNeighbour(neighbourRooms))
-            {
-                return true;
             }
         }
 
         for (float y = roomCenter.y - (room.Height / 2) - 1; y <= roomCenter.y + (room.Height / 2); y += room.Height + 1)
         {
-            // Check if at least 2 edge cells is neighboring a same room
-            List<Room> neighbourRooms = new List<Room>();
-
-            for (float x = roomCenter.x - (room.Width / 2); x < roomCenter.x + (room.Width / 2); x += cellsSize)
+            // Check if there is a non null room in the neighbourhood
+            for (float x = roomCenter.x - (room.Width / 2) + 1; x < roomCenter.x + (room.Width / 2) - 1; x += cellsSize)
             {
                 Vector3 cellPos = new Vector3(x, y, 0);
 
                 if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null)
                 {
-                    neighbourRooms.Add(DicCells[cellPos]);
+                    return true;
                 }
-            }
-
-            if (IsPossibleNeighbour(neighbourRooms))
-            {
-                return true;
             }
         }
 
         return false;
+    }
+
+    public List<Room> GetNeighbourRooms(Room room)
+    {
+        List<Room> neighbourRooms = new List<Room>();
+
+        for (float x = room.CenterPosition.x - (room.Width / 2) - 1; x <= room.CenterPosition.x + (room.Width / 2); x += room.Width + 1)
+        {
+            for (float y = room.CenterPosition.y - (room.Height / 2) + 1; y < room.CenterPosition.y + (room.Height / 2) - 1; y += cellsSize)
+            {
+                Vector3 cellPos = new Vector3(x, y, 0);
+
+                if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null && DicCells[cellPos] != room && !neighbourRooms.Contains(DicCells[cellPos]))
+                {
+                    neighbourRooms.Add(DicCells[cellPos]);
+                }
+            }
+        }
+
+        for (float y = room.CenterPosition.y - (room.Height / 2) - 1; y <= room.CenterPosition.y + (room.Height / 2); y += room.Height + 1)
+        {
+            for (float x = room.CenterPosition.x - (room.Width / 2) + 1; x < room.CenterPosition.x + (room.Width / 2) - 1; x += cellsSize)
+            {
+                Vector3 cellPos = new Vector3(x, y, 0);
+
+                if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null && DicCells[cellPos] != room && !neighbourRooms.Contains(DicCells[cellPos]))
+                {
+                    neighbourRooms.Add(DicCells[cellPos]);
+                }
+            }
+        }
+
+        return neighbourRooms;
     }
 
     public Vector3 SnapToGrid(Vector3 position)

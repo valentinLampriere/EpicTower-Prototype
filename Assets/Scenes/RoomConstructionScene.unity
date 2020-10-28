@@ -844,7 +844,6 @@ MonoBehaviour:
   nbCellsWidth: 20
   nbCellsHeight: 20
   cellsSize: 1
-  test: {fileID: 1545031906}
 --- !u!114 &841961701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859,6 +858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPreviewPrefab: {fileID: 5542931255425188740, guid: 339d24f3de55ebd4e8cad1ce45957102,
     type: 3}
+  test: {fileID: 1545031906}
 --- !u!114 &841961702
 MonoBehaviour:
   m_ObjectHideFlags: 0

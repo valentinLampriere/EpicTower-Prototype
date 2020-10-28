@@ -7,6 +7,8 @@ public class Room : MonoBehaviour
     public float Width;
     public float Height;
 
+    public Vector3 CenterPosition { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
