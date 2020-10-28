@@ -30,8 +30,23 @@ public class RoomController : MonoBehaviour
         return mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
     }
 
+    void LinkToNeighbourRooms(Room room)
+    {
+
+    }
+
     public void CreateRoom()
     {
-        roomPreviewGO = Instantiate(roomPreviewPrefab, GetMousePositionInWorld(), Quaternion.identity);
+        Vector3 roomCenter = grid.SnapToGrid(GetMousePositionInWorld());
+        Room roomPrefab = roomPreviewPrefab.GetComponent<Room>();
+
+        if(grid.CanConstructRoom(roomCenter, roomPrefab))
+        {
+            roomPreviewGO = Instantiate(roomPreviewPrefab, roomCenter, Quaternion.identity);
+            Room room = roomPreviewGO.GetComponent<Room>();
+
+            grid.AddRoomInGrid(roomCenter, room);
+            room.NeigbourRooms = grid.GetNeighbourRooms(room);
+        }
     }
 }
