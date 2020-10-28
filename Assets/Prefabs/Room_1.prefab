@@ -540,9 +540,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1499739303906712971}
   - component: {fileID: 5901287209009085890}
+  - component: {fileID: 2372275651044815326}
   m_Layer: 9
   m_Name: Room_1
-  m_TagString: Untagged
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -584,6 +585,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Width: 4
   Height: 4
+  IdleTrapPlaced: 0
+--- !u!65 &2372275651044815326
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542931255425188740}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 3, z: 2}
+  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!1 &6798959461258343095
 GameObject:
   m_ObjectHideFlags: 0

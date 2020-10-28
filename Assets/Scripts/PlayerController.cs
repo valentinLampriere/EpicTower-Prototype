@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+    
+    public CameraController cameraController;
 
-    [SerializeField] private GameObject FireTrap = null;
-    [SerializeField] private GameObject SlowTrap = null;
-    [SerializeField] private float speed = 0f;
+    [SerializeField]
+    private List<IdleTrapAbstract> IdleTraps = new List<IdleTrapAbstract>();
+    private int currentTrap = 0;
+
+    [SerializeField]
+    private float speed = 0f;
+
+    [SerializeField]
+    private Room currentRoom = null;
 
     public enum PlayerState {
         Moving,
@@ -18,7 +26,7 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody rb;
     private GameObject ladder;
 
-    void Start() {
+    private void Start() {
         rb = GetComponent<Rigidbody>();
     }
 
@@ -35,6 +43,7 @@ public class PlayerController : MonoBehaviour {
     private void FixedUpdate() {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+
         switch (state) {
             case PlayerState.Moving:
                 rb.velocity += Vector3.right * x * speed;
@@ -47,15 +56,36 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void Update() 
+    private void Update() 
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Instantiate(FireTrap, transform.position, Quaternion.identity);
+            if (currentRoom)
+            {
+                currentTrap += 1;
+                if (currentTrap > IdleTraps.Count - 1)
+                {
+                    currentTrap = 0;
+                }
+            }
         }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Instantiate(SlowTrap, transform.position, Quaternion.identity);
+            if (currentRoom)
+            {
+                currentRoom.PlaceTrap(IdleTraps[currentTrap].gameObject);
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            cameraController.ZoomIn(transform.position);
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            cameraController.ZoomOut();
         }
 
         if (ladder != null && Input.GetAxis("Vertical") != 0) {
@@ -63,16 +93,29 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "Ladder") {
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
             ladder = other.gameObject;
         }
-    }
-    private void OnTriggerExit(Collider other) {
-        if (other.gameObject.tag == "Ladder") {
-            ladder = null;
+        else if (other.CompareTag("Room"))
+        {
+            currentRoom = other.GetComponent<Room>();
         }
     }
+
+    private void OnTriggerExit(Collider other) {
+        if (other.CompareTag("Ladder"))
+        {
+            ladder = null;
+        }
+        else if(other.CompareTag("Room"))
+        {
+            currentRoom = null;
+        }
+    }
+
     /*private void OnTriggerStay(Collider other) {
         if (other.gameObject.tag == "Ladder") {
             if (Input.GetKeyDown(KeyCode.S) && (other.gameObject.transform.position.y - transform.position.y) < 0) {

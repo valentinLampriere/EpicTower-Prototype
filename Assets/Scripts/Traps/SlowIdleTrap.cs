@@ -7,23 +7,18 @@ public class SlowIdleTrap : IdleTrapAbstract
     [Range(0f, 100f)]
     public float Slow;
 
-    protected override void DoAction(Enemy enemy)
+    protected override void ActionOnEnter(Enemy enemy)
     {
-
+        enemy.AffectSpeed(Slow / 100f);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void ActionOnExit(Enemy enemy)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            other.GetComponent<Enemy>().AffectSpeed(Slow / 100f);
-        }
+        enemy.ReverseSpeed();
     }
-    private void OnTriggerExit(Collider other)
+
+    protected override void ActionOnStay(Enemy enemy)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            other.GetComponent<Enemy>().ReverseSpeed();
-        }
+
     }
 }
