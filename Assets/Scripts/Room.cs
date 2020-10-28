@@ -8,6 +8,7 @@ public class Room : MonoBehaviour
     public float Height;
 
     public Vector3 CenterPosition { get; set; }
+    public List<Room> NeigbourRooms { get; set; }
 
     // Start is called before the first frame update
     void Start()

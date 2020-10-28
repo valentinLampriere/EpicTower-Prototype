@@ -37,5 +37,10 @@ public class GameManager : MonoBehaviour
             room.transform.position = snpPos;
             grid.AddRoomInGrid(snpPos, room);
         }
+
+        foreach (Room room in towerRooms)
+        {
+            room.NeigbourRooms = grid.GetNeighbourRooms(room);
+        }
     }
 }
