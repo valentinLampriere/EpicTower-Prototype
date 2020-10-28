@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public float Width { get; private set; }
-    public float Height { get; private set; }
+    public float Width;
+    public float Height;
+
+    public Vector3 CenterPosition { get; set; }
+    public List<Room> NeigbourRooms { get; set; }
 
     // Start is called before the first frame update
     void Start()
