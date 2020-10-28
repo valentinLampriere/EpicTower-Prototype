@@ -5,11 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     public enum PlayerState {
-        Moving,
+        Walking,
         Climbing
     }
 
-    PlayerState state = PlayerState.Moving;
+    PlayerState state = PlayerState.Walking;
 
     private float speed = 8f;
     Rigidbody rb;
@@ -21,8 +21,10 @@ public class PlayerController : MonoBehaviour {
 
     public PlayerState ChangeState(PlayerState _state) {
 
-        if(state == PlayerState.Moving && _state == PlayerState.Climbing) {
-            
+        if (state == PlayerState.Walking && _state == PlayerState.Climbing) {
+            rb.isKinematic = true;
+        } else if (state == PlayerState.Climbing && _state == PlayerState.Walking) {
+            rb.isKinematic = false;
         }
 
         state = _state;
@@ -33,11 +35,11 @@ public class PlayerController : MonoBehaviour {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         switch (state) {
-            case PlayerState.Moving:
+            case PlayerState.Walking:
                 rb.velocity += Vector3.right * x * speed * Time.fixedDeltaTime;
                 break;
             case PlayerState.Climbing:
-                rb.velocity += Vector3.up * y * speed * Time.fixedDeltaTime;
+                rb.position += Vector3.up * y * speed * Time.fixedDeltaTime;
                 break;
             default:
                 break;
@@ -45,18 +47,23 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if(ladder != null && Input.GetAxis("Vertical") != 0) {
+        if (Input.GetKeyDown(KeyCode.S) && (ladder.transform.position.y - transform.position.y) > 0) {
+            ChangeState(PlayerState.Climbing);
+        }
+        if (Input.GetKeyDown(KeyCode.Z) && (ladder.transform.position.y - transform.position.y) < 0) {
             ChangeState(PlayerState.Climbing);
         }
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "Ladder") {
+        if (other.CompareTag("Ladder")) {
             ladder = other.gameObject;
+            ChangeState(PlayerState.Walking);
+            Debug.Log(state);
         }
     }
     private void OnTriggerExit(Collider other) {
-        if (other.gameObject.tag == "Ladder") {
+        if (other.CompareTag("Ladder")) {
             ladder = null;
         }
     }
