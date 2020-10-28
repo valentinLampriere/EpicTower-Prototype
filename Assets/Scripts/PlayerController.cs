@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    [SerializeField] private GameObject FireTrap = null;
+    [SerializeField] private GameObject SlowTrap = null;
+    [SerializeField] private float speed = 0f;
+
     public enum PlayerState {
         Moving,
         Climbing
@@ -11,8 +15,7 @@ public class PlayerController : MonoBehaviour {
 
     PlayerState state = PlayerState.Moving;
 
-    private float speed = 8f;
-    Rigidbody rb;
+    private Rigidbody rb;
     private GameObject ladder;
 
     void Start() {
@@ -34,18 +37,28 @@ public class PlayerController : MonoBehaviour {
         float y = Input.GetAxis("Vertical");
         switch (state) {
             case PlayerState.Moving:
-                rb.velocity += Vector3.right * x * speed * Time.fixedDeltaTime;
+                rb.velocity += Vector3.right * x * speed;
                 break;
             case PlayerState.Climbing:
-                rb.velocity += Vector3.up * y * speed * Time.fixedDeltaTime;
+                rb.velocity += Vector3.up * y * speed;
                 break;
             default:
                 break;
         }
     }
 
-    void Update() {
-        if(ladder != null && Input.GetAxis("Vertical") != 0) {
+    void Update() 
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Instantiate(FireTrap, transform.position, Quaternion.identity);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Instantiate(SlowTrap, transform.position, Quaternion.identity);
+        }
+
+        if (ladder != null && Input.GetAxis("Vertical") != 0) {
             ChangeState(PlayerState.Climbing);
         }
     }

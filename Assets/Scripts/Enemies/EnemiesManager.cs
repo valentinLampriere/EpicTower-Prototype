@@ -7,7 +7,7 @@ public class EnemiesManager : MonoBehaviour
     public GameObject enemyGO;
     public List<Wave> waves;
 
-    [SerializeField] private Transform Destination;
+    [SerializeField] private Transform Destination = null;
 
     // Called on the "Run" button
     public void ThrowNextWave() {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Wave : MonoBehaviour{
-    [SerializeField] private List<Enemy> enemies;
+    [SerializeField] private List<Enemy> enemies = new List<Enemy>();
     [SerializeField] private float intervalBetweenEnemies = 0.5f;
 
     private Vector3 source;
