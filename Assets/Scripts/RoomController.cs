@@ -32,7 +32,13 @@ public class RoomController : MonoBehaviour
 
     public void CreateRoom()
     {
-        roomPreviewGO = Instantiate(roomPreviewPrefab, grid.SnapToGrid(GetMousePositionInWorld()), Quaternion.identity);
-        grid.AddRoomInGrid(roomPreviewGO.transform.position, roomPreviewGO.GetComponent<Room>());
+        Vector3 roomCenter = grid.SnapToGrid(GetMousePositionInWorld());
+        Room room = roomPreviewPrefab.GetComponent<Room>();
+
+        if(grid.CanConstructRoom(roomCenter, room))
+        {
+            roomPreviewGO = Instantiate(roomPreviewPrefab, roomCenter, Quaternion.identity);
+            grid.AddRoomInGrid(roomCenter, room);
+        }
     }
 }
