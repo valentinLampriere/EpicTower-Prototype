@@ -927,6 +927,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPreviewPrefab: {fileID: 5542931255425188740, guid: 339d24f3de55ebd4e8cad1ce45957102,
     type: 3}
+  ladderPrefab: {fileID: 987916056032145698, guid: ca607c24695d7f1419babfa292f673e7,
+    type: 3}
+  doorPrefab: {fileID: 0}
 --- !u!114 &841961702
 MonoBehaviour:
   m_ObjectHideFlags: 0
