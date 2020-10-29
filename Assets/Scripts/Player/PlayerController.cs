@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     
     public CameraController cameraController;
+    public CanvasController canvasController;
 
     [SerializeField]
     private List<IdleTrapAbstract> IdleTraps = new List<IdleTrapAbstract>();
@@ -26,8 +27,10 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody rb;
     private GameObject ladder;
 
-    private void Start() {
+    private void Start()
+    {
         rb = GetComponent<Rigidbody>();
+        canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
     }
 
     public PlayerState ChangeState(PlayerState _state) {
@@ -68,6 +71,8 @@ public class PlayerController : MonoBehaviour {
                     currentTrap = 0;
                 }
             }
+
+            canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
         }
 
         if (Input.GetKeyDown(KeyCode.E))

@@ -15,9 +15,8 @@ public class ExplosionIdleTrap : IdleTrapAbstract
     [Range(0, 100f), SerializeField]
     private float DamageCoefficient = 0f;
 
-    [Range(0, 3f), SerializeField]
+    [Range(0, 20f), SerializeField]
     private float PushForce = 0f;
-    private bool BlownUp = false;
 
     private void Start()
     {
@@ -28,7 +27,7 @@ public class ExplosionIdleTrap : IdleTrapAbstract
     {
         EnemiesAOE.Add(enemy);
 
-        if (EnemiesAOE.Count == EnemiesRequirement && !BlownUp)
+        if (EnemiesAOE.Count == EnemiesRequirement)
         {
             foreach (Enemy EnemyToBlowUp in EnemiesAOE)
             {
@@ -36,16 +35,22 @@ public class ExplosionIdleTrap : IdleTrapAbstract
                 Vector3 PushDirection = (enemy.transform.position - transform.position).normalized;
 
                 EnemyToBlowUp.TakeDamage(Damage);
-                EnemyToBlowUp.transform.position += PushDirection * PushForce;
+                PushDirection.z = 0;
+                EnemyToBlowUp.Agent.velocity += PushDirection * PushForce;
             }
 
-            BlownUp = true;
+            DestroyTrap();
         }
+    }
+
+    private void DestroyTrap()
+    {
+        Destroy(gameObject);
     }
 
     protected override void ActionOnStay(Enemy enemy)
     {
-
+        //OnTriggerStay
     }
 
     protected override void ActionOnExit(Enemy enemy)

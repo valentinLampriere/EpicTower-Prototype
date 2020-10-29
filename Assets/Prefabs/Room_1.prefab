@@ -585,6 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Width: 4
   Height: 4
+  Thickness: 2
   IdleTrapPlaced: 0
 --- !u!65 &2372275651044815326
 BoxCollider:

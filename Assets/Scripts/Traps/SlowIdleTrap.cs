@@ -19,6 +19,6 @@ public class SlowIdleTrap : IdleTrapAbstract
 
     protected override void ActionOnStay(Enemy enemy)
     {
-
+        //OnTriggerStay
     }
 }

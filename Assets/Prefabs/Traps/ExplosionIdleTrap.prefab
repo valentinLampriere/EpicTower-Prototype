@@ -126,4 +126,5 @@ MonoBehaviour:
   EnemiesRequirement: 3
   BaseDamage: 30
   DamageCoefficient: 40
-  PushForce: 1
+  PushForce: 15
+  BlownUp: 0
