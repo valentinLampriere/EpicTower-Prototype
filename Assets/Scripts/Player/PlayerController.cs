@@ -63,13 +63,10 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (currentRoom)
+            currentTrap += 1;
+            if (currentTrap > IdleTraps.Count - 1)
             {
-                currentTrap += 1;
-                if (currentTrap > IdleTraps.Count - 1)
-                {
-                    currentTrap = 0;
-                }
+                currentTrap = 0;
             }
 
             canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
@@ -83,7 +80,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             cameraController.ZoomIn(transform.position);
         }

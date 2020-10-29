@@ -20,6 +20,11 @@ public class CameraController : MonoBehaviour
 
             transform.position += direction * ZoomRange;
         }
+        else
+        {
+            zoomPosition.z -= ZoomRange;
+            transform.position = zoomPosition;
+        }
     }
 
     public void ZoomOut()

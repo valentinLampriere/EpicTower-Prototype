@@ -587,6 +587,7 @@ MonoBehaviour:
   Height: 4
   Thickness: 2
   IdleTrapPlaced: 0
+  BottomBlock: {fileID: 2303565551367049114}
 --- !u!65 &2372275651044815326
 BoxCollider:
   m_ObjectHideFlags: 0
