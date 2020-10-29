@@ -7,20 +7,34 @@ public class Room : MonoBehaviour
 {
     public float Width;
     public float Height;
+    public float Thickness;
+    public bool IdleTrapPlaced = false;
 
     public Vector3 CenterPosition { get; set; }
     public List<Tuple<Room, bool>> NeighbourRooms { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
+    private GameObject PlacedTrap = null;
+
+    public void PlaceTrap(GameObject trap)
     {
+        if (IdleTrapPlaced)
+        {
+            DeleteTrap();
+        }
+
+        Vector3 TrapPosition = transform.position;
         
+        IdleTrapPlaced = true;
+        TrapPosition.y -= Height / 2f;
+        TrapPosition.y += 0.5f + trap.transform.localScale.y / 2f;
+        TrapPosition.z += Thickness / 4;
+        PlacedTrap = Instantiate(trap, TrapPosition, Quaternion.identity, transform);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DeleteTrap()
     {
-        
+        Destroy(PlacedTrap);
+        IdleTrapPlaced = false;
     }
 
     public bool ContainsNeighbourRoom(Room _neighRoom)

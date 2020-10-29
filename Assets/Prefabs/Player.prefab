@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2428573621373337547}
   - component: {fileID: 2428573621373337544}
   - component: {fileID: 2428573621373337545}
-  - component: {fileID: 2428573621373337542}
-  - component: {fileID: 6643185402011275868}
   - component: {fileID: 4064026693927604268}
+  - component: {fileID: 1650087175}
+  - component: {fileID: 1650087177}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -82,21 +82,26 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &2428573621373337542
-CapsuleCollider:
+--- !u!114 &4064026693927604268
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2428573621373337543}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!54 &6643185402011275868
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a19b1c69d3d6ca4eb3f6fd89e8a3b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraController: {fileID: 0}
+  FireTrap: {fileID: 8769374736793496398, guid: b394b61bf7ece3c408e1bd9cb799ea69,
+    type: 3}
+  SlowTrap: {fileID: 1448642627395234769, guid: 28ae600fdf187884caac085d2e690772,
+    type: 3}
+  speed: 0.5
+  currentRoom: {fileID: 0}
+--- !u!54 &1650087175
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,22 +115,19 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 88
+  m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &4064026693927604268
-MonoBehaviour:
+--- !u!136 &1650087177
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2428573621373337543}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a19b1c69d3d6ca4eb3f6fd89e8a3b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FireTrap: {fileID: 8769374736793496398, guid: b394b61bf7ece3c408e1bd9cb799ea69,
-    type: 3}
-  SlowTrap: {fileID: 1448642627395234769, guid: 28ae600fdf187884caac085d2e690772,
-    type: 3}
-  speed: 0.5
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
