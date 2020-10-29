@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 
         foreach (Room room in towerRooms)
         {
-            room.NeigbourRooms = grid.GetNeighbourRooms(room);
+            room.NeighbourRooms = grid.FindNeighbourRooms(room);
         }
     }
 }

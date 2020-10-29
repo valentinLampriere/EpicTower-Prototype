@@ -136,9 +136,21 @@ public class Grid : MonoBehaviour
         return false;
     }
 
-    public List<Room> GetNeighbourRooms(Room room)
+    public List<Tuple<Room, bool>> FindNeighbourRooms(Room room)
     {
-        List<Room> neighbourRooms = new List<Room>();
+        List<Tuple<Room, bool>> neighbourRooms = new List<Tuple<Room, bool>>();
+
+        bool ContainsNeighbourRoom(Room _neighRoom, List<Tuple<Room, bool>> _neighbourRooms)
+        {
+            foreach (Tuple<Room, bool> neighTuple in _neighbourRooms)
+            {
+                if (neighTuple.Item1.Equals(_neighRoom))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         for (float x = room.CenterPosition.x - (room.Width / 2) - 1; x <= room.CenterPosition.x + (room.Width / 2); x += room.Width + 1)
         {
@@ -146,9 +158,9 @@ public class Grid : MonoBehaviour
             {
                 Vector3 cellPos = new Vector3(x, y, 0);
 
-                if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null && DicCells[cellPos] != room && !neighbourRooms.Contains(DicCells[cellPos]))
+                if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null && DicCells[cellPos] != room && !ContainsNeighbourRoom(DicCells[cellPos], neighbourRooms))
                 {
-                    neighbourRooms.Add(DicCells[cellPos]);
+                    neighbourRooms.Add(Tuple.Create(DicCells[cellPos], false));
                 }
             }
         }
@@ -159,9 +171,9 @@ public class Grid : MonoBehaviour
             {
                 Vector3 cellPos = new Vector3(x, y, 0);
 
-                if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null && DicCells[cellPos] != room && !neighbourRooms.Contains(DicCells[cellPos]))
+                if (DicCells.ContainsKey(cellPos) && DicCells[cellPos] != null && DicCells[cellPos] != room && !ContainsNeighbourRoom(DicCells[cellPos], neighbourRooms))
                 {
-                    neighbourRooms.Add(DicCells[cellPos]);
+                    neighbourRooms.Add(Tuple.Create(DicCells[cellPos], false));
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -35,8 +36,9 @@ public class RoomController : MonoBehaviour
 
     void LinkToNeighbourRooms(Room room)
     {
-        foreach (Room neighRoom in room.NeigbourRooms)
+        for(int i = 0; i < room.NeighbourRooms.Count; i++)
         {
+            Room neighRoom = room.NeighbourRooms[i].Item1;
             int relPos = NeighbourRelativePosition(room, neighRoom);
 
             // If is horizontal neighbour
@@ -60,9 +62,46 @@ public class RoomController : MonoBehaviour
             else if(relPos == 1)
             {
                 // Find a way from the neighbour to the current room with max distance
+                List<Room> visitedRooms = new List<Room>();
+                bool hasWay = FindWayToVerticalNeighbour(room, neighRoom, visitedRooms, 5, 0);
 
+                foreach (Room room1 in visitedRooms)
+                {
+                    Debug.Log(visitedRooms);
+                }
+                Debug.Log(hasWay);
+
+                if (!hasWay)
+                {
+                    Instantiate(ladderPrefab, room.CenterPosition, Quaternion.identity);
+                }
+            }
+
+            room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
+        }
+    }
+
+    bool FindWayToVerticalNeighbour(Room room, Room neighRoom, List<Room> visitedRooms, int roomsLimit, int crtRoom)
+    {
+        visitedRooms.Add(neighRoom);
+        Debug.Log(visitedRooms.Count);
+
+        if (neighRoom.ContainsNeighbourRoom(room))
+        {
+            return true;
+        }
+        else
+        {
+            foreach (Tuple<Room, bool> neighRoomTuple in neighRoom.NeighbourRooms)
+            {
+                if (!visitedRooms.Contains(neighRoomTuple.Item1))
+                {
+                    return FindWayToVerticalNeighbour(room, neighRoomTuple.Item1, visitedRooms, roomsLimit, crtRoom);
+                }
             }
         }
+
+        return false;
     }
 
     void CreateLadder(Vector3 roomAnchor, Vector3 neighRoomAnchor)
@@ -91,12 +130,10 @@ public class RoomController : MonoBehaviour
 
         if (neighRoomFirstVertice.x == room.CenterPosition.x + (room.Width / 2) || neighRoomLastVertice.x == room.CenterPosition.x - (room.Width / 2))
         {
-            Debug.Log(room + " " + neighRoom + " horizontal");
             return 0;
         }
         else if(neighRoomFirstVertice.y == room.CenterPosition.y + (room.Height / 2) || neighRoomLastVertice.y == room.CenterPosition.y - (room.Height / 2))
         {
-            Debug.Log(room + " " + neighRoom + " vertical");
             return 1;
         }
 
@@ -115,7 +152,7 @@ public class RoomController : MonoBehaviour
             Room room = roomPreviewGO.GetComponent<Room>();
 
             grid.AddRoomInGrid(roomCenter, room);
-            room.NeigbourRooms = grid.GetNeighbourRooms(room);
+            room.NeighbourRooms = grid.FindNeighbourRooms(room);
             LinkToNeighbourRooms(room);
         }
     }
