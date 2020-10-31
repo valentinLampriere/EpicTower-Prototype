@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveTrapAbstract : MonoBehaviour
+public abstract class ActiveTrapAbstract : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
+        if (TrapTriggered())
+        {
+            ActivateTrap();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public abstract void ActivateTrap();
+    public abstract bool TrapTriggered();
 }
