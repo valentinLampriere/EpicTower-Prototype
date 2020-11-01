@@ -344,6 +344,61 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower
       objectReference: {fileID: 0}
+    - target: {fileID: 1254415623477653673, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415623477653673, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415623700041163, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415623794302523, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415623964464323, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415623964464323, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415624091597358, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415624091597358, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415625168668285, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415625466359104, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254415625514767714, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e42c2eb04ce420f4c9008a8d7e5a529f, type: 3}
 --- !u!1 &383000985
@@ -653,6 +708,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1121619970}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ThrowNextWave
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eff9e90ebecbd3247b79c9035c53b155, type: 3}
@@ -1208,7 +1273,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1121619965}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.23, y: -1.97, z: -0.41}
+  m_LocalPosition: {x: 8.23, y: -1.97, z: 0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1795199720}

@@ -9,6 +9,7 @@ public class RoomController : MonoBehaviour
     [SerializeField] private GameObject roomPreviewPrefab = null;
     [SerializeField] private GameObject ladderPrefab = null;
     [SerializeField] private GameObject doorPrefab = null;
+    [SerializeField] private int lengthPathLimit = 0;
 
     private GameObject roomPreviewGO;
     private Camera mainCamera;
@@ -57,47 +58,71 @@ public class RoomController : MonoBehaviour
                         new Vector3(room.CenterPosition.x - (room.Width / 2) + 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
                         new Vector3(neighRoom.CenterPosition.x + (neighRoom.Width / 2) - 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
                 }
+
+                room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
+                neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
             }
             // If is vertical neighbour
             else if(relPos == 1)
             {
                 // Find a way from the neighbour to the current room with max distance
                 List<Room> visitedRooms = new List<Room>();
-                bool hasWay = FindWayToVerticalNeighbour(room, neighRoom, visitedRooms, 5, 0);
-
-                foreach (Room room1 in visitedRooms)
-                {
-                    Debug.Log(visitedRooms);
-                }
-                Debug.Log(hasWay);
+                List<Room> pathRooms = new List<Room>();
+                bool hasWay = FindWayToVerticalNeighbour(neighRoom, room, neighRoom, visitedRooms, 0, pathRooms);
 
                 if (!hasWay)
                 {
-                    Instantiate(ladderPrefab, room.CenterPosition, Quaternion.identity);
+                    if (room.CenterPosition.y < neighRoom.CenterPosition.y)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+                    room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
+                    neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
                 }
             }
-
-            room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
         }
     }
 
-    bool FindWayToVerticalNeighbour(Room room, Room neighRoom, List<Room> visitedRooms, int roomsLimit, int crtRoom)
+    bool FindWayToVerticalNeighbour(Room firstNeighbour, Room room, Room neighRoom, List<Room> visitedRooms, int pathLength, List<Room> pathRooms, bool addToVisited = true)
     {
-        visitedRooms.Add(neighRoom);
-        Debug.Log(visitedRooms.Count);
-
-        if (neighRoom.ContainsNeighbourRoom(room))
+        if(addToVisited)
         {
+            visitedRooms.Add(neighRoom);
+            pathLength++;
+        }
+
+        if (neighRoom.ContainsNeighbourRoomWithStairs(room) || (neighRoom.ContainsNeighbourRoom(room) && NeighbourRelativePosition(room, neighRoom) == 0))
+        {
+            Debug.Log(room.CenterPosition + " " + neighRoom.CenterPosition + " " + NeighbourRelativePosition(room, neighRoom));
             return true;
         }
         else
         {
-            foreach (Tuple<Room, bool> neighRoomTuple in neighRoom.NeighbourRooms)
+            if(pathLength < lengthPathLimit)
             {
-                if (!visitedRooms.Contains(neighRoomTuple.Item1))
+                foreach (Tuple<Room, bool> neighRoomTuple in neighRoom.NeighbourRooms)
                 {
-                    return FindWayToVerticalNeighbour(room, neighRoomTuple.Item1, visitedRooms, roomsLimit, crtRoom);
+                    if (!visitedRooms.Contains(neighRoomTuple.Item1) && neighRoomTuple.Item2 == true)
+                    {
+                        pathRooms.Add(neighRoom);
+                        return FindWayToVerticalNeighbour(firstNeighbour, room, neighRoomTuple.Item1, visitedRooms, pathLength, pathRooms);
+                    }
                 }
+            }
+
+            if(!neighRoom.Equals(firstNeighbour))
+            {
+                // Get back to the previous room
+                pathLength--;
+                Room prevRoom = pathRooms[pathRooms.Count - 1];
+                pathRooms.RemoveAt(pathRooms.Count - 1);
+
+                return FindWayToVerticalNeighbour(firstNeighbour, room, prevRoom, visitedRooms, pathLength, pathRooms, false);
             }
         }
 
@@ -141,6 +166,14 @@ public class RoomController : MonoBehaviour
         return -1;
     }
 
+    void AddRoomToHisNeighbours(Room room)
+    {
+        foreach (Tuple<Room,bool> neighRoomTuple in room.NeighbourRooms)
+        {
+            neighRoomTuple.Item1.NeighbourRooms.Add(Tuple.Create(room, false));
+        }
+    }
+
     public void CreateRoom()
     {
         Vector3 roomCenter = grid.SnapToGrid(GetMousePositionInWorld());
@@ -153,6 +186,7 @@ public class RoomController : MonoBehaviour
 
             grid.AddRoomInGrid(roomCenter, room);
             room.NeighbourRooms = grid.FindNeighbourRooms(room);
+            AddRoomToHisNeighbours(room);
             LinkToNeighbourRooms(room);
         }
     }

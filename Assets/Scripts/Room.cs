@@ -37,7 +37,7 @@ public class Room : MonoBehaviour
         IdleTrapPlaced = false;
     }
 
-    public bool ContainsNeighbourRoom(Room _neighRoom)
+    public bool ContainsNeighbourRoomWithStairs(Room _neighRoom)
     {
         foreach (Tuple<Room, bool> neighTuple in NeighbourRooms)
         {
@@ -48,5 +48,32 @@ public class Room : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool ContainsNeighbourRoom(Room _neighRoom)
+    {
+        foreach (Tuple<Room, bool> neighTuple in NeighbourRooms)
+        {
+            if (neighTuple.Item1.Equals(_neighRoom))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int GetTupleIndexOfRoom(Room room)
+    {
+        for(int i = 0; i < NeighbourRooms.Count; i++)
+        {
+            if(NeighbourRooms[i].Item1.Equals(room))
+            {
+                return i;
+            }
+        }
+
+        Debug.Log("No index found");
+        return -1;
     }
 }
