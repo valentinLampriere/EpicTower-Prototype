@@ -72,15 +72,7 @@ public class RoomController : MonoBehaviour
 
                 if (!hasWay)
                 {
-                    if (room.CenterPosition.y < neighRoom.CenterPosition.y)
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
-
+                    CreateStairs(room, neighRoom);
                     room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
                     neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
                 }
@@ -129,10 +121,53 @@ public class RoomController : MonoBehaviour
         return false;
     }
 
+    void CreateStairs(Room room, Room neighRoom)
+    {
+        Vector3 minRoomAnchor;
+        Vector3 maxRoomAnchor;
+        Vector3 minNeighRoomAnchor;
+        Vector3 maxNeighRoomAnchor;
+        float yPos;
+        float dist;
+
+        if (room.CenterPosition.y > neighRoom.CenterPosition.y)
+        {
+            minRoomAnchor = new Vector3(room.CenterPosition.x - room.Width / 2, room.CenterPosition.y - room.Height / 2);
+            maxRoomAnchor = new Vector3(room.CenterPosition.x + room.Width / 2, room.CenterPosition.y - room.Height / 2);
+            minNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x - neighRoom.Width / 2, neighRoom.CenterPosition.y + neighRoom.Height / 2);
+            maxNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x + neighRoom.Width / 2, neighRoom.CenterPosition.y + neighRoom.Height / 2);
+            yPos = neighRoom.CenterPosition.y + 0.5f;
+            dist = neighRoom.Height;
+        }
+        else
+        {
+            minRoomAnchor = new Vector3(room.CenterPosition.x - room.Width / 2, room.CenterPosition.y + room.Height / 2);
+            maxRoomAnchor = new Vector3(room.CenterPosition.x + room.Width / 2, room.CenterPosition.y + room.Height / 2);
+            minNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x - neighRoom.Width / 2, neighRoom.CenterPosition.y - neighRoom.Height / 2);
+            maxNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x + neighRoom.Width / 2, neighRoom.CenterPosition.y - neighRoom.Height / 2);
+            yPos = room.CenterPosition.y + 0.5f;
+            dist = room.Height;
+        }
+
+        Vector3 stairsPos = new Vector3(
+            (Mathf.Max(minRoomAnchor.x, minNeighRoomAnchor.x) + Mathf.Min(maxRoomAnchor.x, maxNeighRoomAnchor.x)) / 2,
+            yPos);
+
+        GameObject stairsGO = Instantiate(ladderPrefab, stairsPos, Quaternion.identity);
+        stairsGO.transform.localScale = new Vector3(stairsGO.transform.localScale.x, dist, stairsGO.transform.localScale.z);
+        NavMeshLink links = stairsGO.GetComponentInChildren<NavMeshLink>();
+        links.startPoint = new Vector3(0, -dist / 2, 0);
+        links.endPoint = new Vector3(0, dist / 2, 0);
+    }
+
     void CreateLadder(Vector3 roomAnchor, Vector3 neighRoomAnchor)
     {
         Vector3 ladderPos = roomAnchor + neighRoomAnchor;
-        ladderPos = new Vector3(ladderPos.x / 2, ladderPos.y / 2, 0);
+        float xOffset = roomAnchor.y > neighRoomAnchor.y ? -0.5f : 0.5f;
+        xOffset = roomAnchor.x < neighRoomAnchor.x ? -xOffset : xOffset;
+
+        ladderPos = new Vector3((ladderPos.x / 2) + xOffset, (ladderPos.y / 2) - 0.5f, 0);
+
 
         float angle = Mathf.Atan2(neighRoomAnchor.y - roomAnchor.y, neighRoomAnchor.x - roomAnchor.x);
         angle = Mathf.Rad2Deg * angle;

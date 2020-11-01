@@ -1037,6 +1037,7 @@ MonoBehaviour:
   ladderPrefab: {fileID: 987916056032145698, guid: ca607c24695d7f1419babfa292f673e7,
     type: 3}
   doorPrefab: {fileID: 0}
+  lengthPathLimit: 5
 --- !u!114 &841961702
 MonoBehaviour:
   m_ObjectHideFlags: 0
