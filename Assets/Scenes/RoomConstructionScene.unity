@@ -579,13 +579,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 841961702}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuildNavMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1121619970}
     - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ThrowNextWave
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917102419872459221, guid: eff9e90ebecbd3247b79c9035c53b155,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eff9e90ebecbd3247b79c9035c53b155, type: 3}
@@ -842,6 +872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 995097773}
+  navMeshSurface: {fileID: 839904497}
 --- !u!4 &841961703
 Transform:
   m_ObjectHideFlags: 0

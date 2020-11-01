@@ -45,7 +45,6 @@ public class RoomController : MonoBehaviour
 
         if (neighRoom.ContainsNeighbourRoomWithStairs(room) || (neighRoom.ContainsNeighbourRoom(room) && NeighbourRelativePosition(room, neighRoom) == 0))
         {
-            Debug.Log(room.CenterPosition + " " + neighRoom.CenterPosition + " " + NeighbourRelativePosition(room, neighRoom));
             return true;
         }
         else

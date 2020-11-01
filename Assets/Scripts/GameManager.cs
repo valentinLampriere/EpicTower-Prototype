@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject towerPrefab = null;
+    [SerializeField] NavMeshSurface navMeshSurface = null;
 
     private Grid grid;
     private RoomController roomController;
@@ -40,5 +42,10 @@ public class GameManager : MonoBehaviour
             roomController.AddRoomToHisNeighbours(room);
             roomController.LinkToNeighbourRooms(room);
         }
+    }
+
+    public void BuildNavMesh()
+    {
+        navMeshSurface.BuildNavMesh();
     }
 }
