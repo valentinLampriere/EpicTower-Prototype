@@ -36,11 +36,9 @@ public class GameManager : MonoBehaviour
             Vector3 snpPos = grid.SnapToGrid(room.transform.position);
             room.transform.position = snpPos;
             grid.AddRoomInGrid(snpPos, room);
-        }
-
-        foreach (Room room in towerRooms)
-        {
             room.NeighbourRooms = grid.FindNeighbourRooms(room);
+            roomController.AddRoomToHisNeighbours(room);
+            roomController.LinkToNeighbourRooms(room);
         }
     }
 }

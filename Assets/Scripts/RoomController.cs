@@ -35,51 +35,6 @@ public class RoomController : MonoBehaviour
         return mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
     }
 
-    void LinkToNeighbourRooms(Room room)
-    {
-        for(int i = 0; i < room.NeighbourRooms.Count; i++)
-        {
-            Room neighRoom = room.NeighbourRooms[i].Item1;
-            int relPos = NeighbourRelativePosition(room, neighRoom);
-
-            // If is horizontal neighbour
-            if (relPos == 0)
-            {
-                // Create door and stairs
-                if(room.CenterPosition.x < neighRoom.CenterPosition.x)
-                {
-                    CreateLadder(
-                        new Vector3(room.CenterPosition.x + (room.Width / 2) - 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
-                        new Vector3(neighRoom.CenterPosition.x - (neighRoom.Width / 2) + 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
-                }
-                else
-                {
-                    CreateLadder(
-                        new Vector3(room.CenterPosition.x - (room.Width / 2) + 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
-                        new Vector3(neighRoom.CenterPosition.x + (neighRoom.Width / 2) - 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
-                }
-
-                room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
-                neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
-            }
-            // If is vertical neighbour
-            else if(relPos == 1)
-            {
-                // Find a way from the neighbour to the current room with max distance
-                List<Room> visitedRooms = new List<Room>();
-                List<Room> pathRooms = new List<Room>();
-                bool hasWay = FindWayToVerticalNeighbour(neighRoom, room, neighRoom, visitedRooms, 0, pathRooms);
-
-                if (!hasWay)
-                {
-                    CreateStairs(room, neighRoom);
-                    room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
-                    neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
-                }
-            }
-        }
-    }
-
     bool FindWayToVerticalNeighbour(Room firstNeighbour, Room room, Room neighRoom, List<Room> visitedRooms, int pathLength, List<Room> pathRooms, bool addToVisited = true)
     {
         if(addToVisited)
@@ -201,7 +156,52 @@ public class RoomController : MonoBehaviour
         return -1;
     }
 
-    void AddRoomToHisNeighbours(Room room)
+    public void LinkToNeighbourRooms(Room room)
+    {
+        for (int i = 0; i < room.NeighbourRooms.Count; i++)
+        {
+            Room neighRoom = room.NeighbourRooms[i].Item1;
+            int relPos = NeighbourRelativePosition(room, neighRoom);
+
+            // If is horizontal neighbour
+            if (relPos == 0)
+            {
+                // Create door and stairs
+                if (room.CenterPosition.x < neighRoom.CenterPosition.x)
+                {
+                    CreateLadder(
+                        new Vector3(room.CenterPosition.x + (room.Width / 2) - 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
+                        new Vector3(neighRoom.CenterPosition.x - (neighRoom.Width / 2) + 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
+                }
+                else
+                {
+                    CreateLadder(
+                        new Vector3(room.CenterPosition.x - (room.Width / 2) + 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
+                        new Vector3(neighRoom.CenterPosition.x + (neighRoom.Width / 2) - 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
+                }
+
+                room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
+                neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
+            }
+            // If is vertical neighbour
+            else if (relPos == 1)
+            {
+                // Find a way from the neighbour to the current room with max distance
+                List<Room> visitedRooms = new List<Room>();
+                List<Room> pathRooms = new List<Room>();
+                bool hasWay = FindWayToVerticalNeighbour(neighRoom, room, neighRoom, visitedRooms, 0, pathRooms);
+
+                if (!hasWay)
+                {
+                    CreateStairs(room, neighRoom);
+                    room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
+                    neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
+                }
+            }
+        }
+    }
+
+    public void AddRoomToHisNeighbours(Room room)
     {
         foreach (Tuple<Room,bool> neighRoomTuple in room.NeighbourRooms)
         {
