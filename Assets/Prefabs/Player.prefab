@@ -132,4 +132,4 @@ MonoBehaviour:
   - {fileID: 142224856, guid: 28ae600fdf187884caac085d2e690772, type: 3}
   currentRoom: {fileID: 0}
   moveSpeed: 5
-  climbSpeed: 2.5
+  climbSpeed: 3
