@@ -11,20 +11,26 @@ public class PlayerController : MonoBehaviour {
 
     PlayerState state = PlayerState.Walking;
 
-    private float speed = 8f;
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float climbSpeed = 1.5f;
+
+    private float xMovement;
+    private float yMovement;
+    private Vector3 velocity = Vector3.zero;
+    private Vector3 climbDirection;
+
     Rigidbody rb;
-    private GameObject ladder;
+    CapsuleCollider cc;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CapsuleCollider>();
     }
 
     public PlayerState ChangeState(PlayerState _state) {
 
         if (state == PlayerState.Walking && _state == PlayerState.Climbing) {
-            rb.isKinematic = true;
         } else if (state == PlayerState.Climbing && _state == PlayerState.Walking) {
-            rb.isKinematic = false;
         }
 
         state = _state;
@@ -32,49 +38,33 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
         switch (state) {
             case PlayerState.Walking:
-                rb.velocity += Vector3.right * x * speed * Time.fixedDeltaTime;
+                Vector3 targetVelocity = new Vector3(xMovement, rb.velocity.y);
+                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, 0.3f);
                 break;
             case PlayerState.Climbing:
-                rb.position += Vector3.up * y * speed * Time.fixedDeltaTime;
+                rb.MovePosition(climbDirection);
                 break;
             default:
+                ChangeState(PlayerState.Walking);
                 break;
         }
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.S) && (ladder.transform.position.y - transform.position.y) > 0) {
-            ChangeState(PlayerState.Climbing);
-        }
-        if (Input.GetKeyDown(KeyCode.Z) && (ladder.transform.position.y - transform.position.y) < 0) {
-            ChangeState(PlayerState.Climbing);
-        }
+        xMovement = Input.GetAxisRaw("Horizontal") * moveSpeed;
+        yMovement = Input.GetAxisRaw("Vertical") * climbSpeed;
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Ladder")) {
-            ladder = other.gameObject;
-            ChangeState(PlayerState.Walking);
-            Debug.Log(state);
-        }
-    }
-    private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Ladder")) {
-            ladder = null;
-        }
-    }
-    /*private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "Ladder") {
-            if (Input.GetKeyDown(KeyCode.S) && (other.gameObject.transform.position.y - transform.position.y) < 0) {
+            if (state != PlayerState.Climbing) {
                 ChangeState(PlayerState.Climbing);
-            }
-            if (Input.GetKeyDown(KeyCode.Z) && (other.gameObject.transform.position.y - transform.position.y) > 0) {
-                ChangeState(PlayerState.Climbing);
+                climbDirection = other.gameObject.GetComponent<Ladder>().GetOtherEnd(other);
+            } else {
+                ChangeState(PlayerState.Walking);
             }
         }
-    }*/
+    }
 }
