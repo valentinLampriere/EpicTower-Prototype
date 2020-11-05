@@ -25,7 +25,21 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            roomController.CreateRoom();
+            if (roomController.ActivePreview)
+            {
+                roomController.CreateRoom();
+            }
+            else
+            {
+                roomController.ActivePreview = true;
+                roomController.CreateRoomPreview();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            roomController.ActivePreview = false;
+            roomController.DestroyRoomPreview();
         }
     }
 

@@ -7,13 +7,17 @@ using UnityEngine.AI;
 public class RoomController : MonoBehaviour
 {
     [SerializeField] private GameObject roomPreviewPrefab = null;
+    [SerializeField] private GameObject roomObjectPrefab = null;
     [SerializeField] private GameObject ladderPrefab = null;
     [SerializeField] private GameObject doorPrefab = null;
     [SerializeField] private int lengthPathLimit = 0;
 
+    private GameObject roomGO;
     private GameObject roomPreviewGO;
     private Camera mainCamera;
     private Grid grid;
+
+    public bool ActivePreview { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +28,7 @@ public class RoomController : MonoBehaviour
 
     void Update()
     {
-        if(roomPreviewGO != null)
+        if(roomPreviewGO != null && ActivePreview)
         {
             roomPreviewGO.transform.position = grid.SnapToGrid(GetMousePositionInWorld());
         }
@@ -209,15 +213,25 @@ public class RoomController : MonoBehaviour
         }
     }
 
+    public void CreateRoomPreview()
+    {
+        roomPreviewGO = Instantiate(roomPreviewPrefab, grid.SnapToGrid(GetMousePositionInWorld()), Quaternion.identity);
+    }
+
+    public void DestroyRoomPreview()
+    {
+        Destroy(roomPreviewGO);
+    }
+
     public void CreateRoom()
     {
         Vector3 roomCenter = grid.SnapToGrid(GetMousePositionInWorld());
-        Room roomPrefab = roomPreviewPrefab.GetComponent<Room>();
+        Room roomPrefab = roomObjectPrefab.GetComponent<Room>();
 
         if(grid.CanConstructRoom(roomCenter, roomPrefab))
         {
-            roomPreviewGO = Instantiate(roomPreviewPrefab, roomCenter, Quaternion.identity);
-            Room room = roomPreviewGO.GetComponent<Room>();
+            roomGO = Instantiate(roomObjectPrefab, roomCenter, Quaternion.identity);
+            Room room = roomGO.GetComponent<Room>();
 
             grid.AddRoomInGrid(roomCenter, room);
             room.NeighbourRooms = grid.FindNeighbourRooms(room);

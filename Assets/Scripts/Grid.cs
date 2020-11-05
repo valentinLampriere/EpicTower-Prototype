@@ -9,7 +9,7 @@ public class Grid : MonoBehaviour
     [SerializeField] private int nbCellsHeight = 0;
     [SerializeField] private float cellsSize = 1f;
 
-    public Dictionary<Vector3, Room> DicCells { get; private set; }
+    internal Dictionary<Vector3, Room> DicCells { get; private set; }
 
     void Awake()
     {
