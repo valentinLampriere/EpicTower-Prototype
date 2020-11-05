@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class PlayerController : MonoBehaviour {
     private float xMovement;
     private float yMovement;
     private Vector3 velocity = Vector3.zero;
-    private Vector3 climbDirection;
+    Tuple<Ladder, SphereCollider> climbingLadder;
 
     Rigidbody rb;
     CapsuleCollider cc;
@@ -30,7 +31,12 @@ public class PlayerController : MonoBehaviour {
     public PlayerState ChangeState(PlayerState _state) {
 
         if (state == PlayerState.Walking && _state == PlayerState.Climbing) {
+            rb.useGravity = false;
+            cc.isTrigger = true;
+            rb.velocity = Vector3.zero;
         } else if (state == PlayerState.Climbing && _state == PlayerState.Walking) {
+            rb.useGravity = true;
+            cc.isTrigger = false;
         }
 
         state = _state;
@@ -44,7 +50,17 @@ public class PlayerController : MonoBehaviour {
                 rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, 0.3f);
                 break;
             case PlayerState.Climbing:
-                rb.MovePosition(climbDirection);
+                Vector3 direction = climbingLadder.Item1.GetDirectionEnd(climbingLadder.Item2);
+                if (xMovement > 0) {
+                    transform.Translate(direction * Time.deltaTime * xMovement);
+                } else if (xMovement < 0) {
+                    transform.Translate(direction * Time.deltaTime * -xMovement);
+                } else if (yMovement > 0) {
+                    transform.Translate(direction * Time.deltaTime * yMovement);
+                } else if (yMovement < 0) {
+                    transform.Translate(direction * Time.deltaTime * -yMovement);
+                }
+
                 break;
             default:
                 ChangeState(PlayerState.Walking);
@@ -54,17 +70,40 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
         xMovement = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        yMovement = Input.GetAxisRaw("Vertical") * climbSpeed;
+        yMovement = Input.GetAxisRaw("Vertical") * moveSpeed;
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerStay(Collider other) {
         if (other.CompareTag("Ladder")) {
-            if (state != PlayerState.Climbing) {
-                ChangeState(PlayerState.Climbing);
-                climbDirection = other.gameObject.GetComponent<Ladder>().GetOtherEnd(other);
+            if (state == PlayerState.Climbing) {
+                Vector3 dir;//= climbingLadder.Item1.GetDirectionEnd(climbingLadder.Item1.GetOtherEnd(other));
+                dir = climbingLadder.Item1.GetColliderPosition(climbingLadder.Item2);
+                if (Vector3.Distance(transform.position, dir) < 1f) {
+                    ChangeState(PlayerState.Walking);
+                    climbingLadder = null;
+                }
             } else {
-                ChangeState(PlayerState.Walking);
+                Ladder ladder = other.gameObject.GetComponent<Ladder>();
+                Vector2 directionLadder = ladder.GetDirectionEnd(ladder.GetOtherEnd(other));
+
+
+                if ((directionLadder.x > 0.25f && xMovement > 0 || directionLadder.x < -0.25f && xMovement < 0) ||
+                    (directionLadder.y > 0.25f && yMovement > 0 || directionLadder.y < -0.25f && yMovement < 0)) {
+                    climbingLadder = Tuple.Create(ladder, ladder.GetOtherEnd(other));
+                    ChangeState(PlayerState.Climbing);
+                }
             }
         }
     }
+
+    /*private void OnTriggerExit(Collider other) {
+        if (other.CompareTag("Ladder")) {
+            if (state == PlayerState.Climbing) {
+                if (climbingLadder.Item2 == other) {
+                    ChangeState(PlayerState.Walking);
+                    climbingLadder = null;
+                }
+            }
+        }
+    }*/
 }

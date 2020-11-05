@@ -11,11 +11,19 @@ public class Ladder : MonoBehaviour {
         End1 = GetComponents<SphereCollider>()[0];
         End2 = GetComponents<SphereCollider>()[1];
     }
-    public Vector3 GetOtherEnd(Collider collider) {
-        if (collider == End1) {
-            return End2.transform.TransformPoint(End2.center);
-        } else {
-            return End1.transform.TransformPoint(End1.center);
-        }
+    public SphereCollider GetOtherEnd(Collider collider) {
+        return (collider == End1) ? End2 : End1;
+    }
+    public Vector3 GetOtherEndPosition(Collider collider) {
+        return GetOtherEnd(collider).transform.TransformPoint(GetOtherEnd(collider).center);
+    }
+
+    public Vector3 GetColliderPosition(Collider collider) {
+        SphereCollider scollider = GetOtherEnd(GetOtherEnd(collider));
+        return scollider.transform.TransformPoint(scollider.center);
+    }
+
+    public Vector2 GetDirectionEnd(Collider collider) {
+        return (GetColliderPosition(collider) - GetOtherEndPosition(collider)).normalized;
     }
 }
