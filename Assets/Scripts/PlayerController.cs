@@ -27,51 +27,21 @@ public class PlayerController : MonoBehaviour {
 
     private float xMovement;
     private float yMovement;
-    private Vector3 velocity = Vector3.zero;
-    Tuple<Ladder, SphereCollider> climbingLadder;
 
     Rigidbody rb;
-    CapsuleCollider cc;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
-        cc = GetComponent<CapsuleCollider>();
         canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
-    }
-
-    public PlayerState ChangeState(PlayerState _state) {
-
-        if (state == PlayerState.Walking && _state == PlayerState.Climbing) {
-            rb.useGravity = false;
-            cc.isTrigger = true;
-            rb.velocity = Vector3.zero;
-        } else if (state == PlayerState.Climbing && _state == PlayerState.Walking) {
-            rb.useGravity = true;
-            cc.isTrigger = false;
-        }
-
-        state = _state;
-        return state;
     }
 
     private void FixedUpdate() {
         switch (state) {
             case PlayerState.Walking:
-                Vector3 targetVelocity = new Vector3(xMovement, rb.velocity.y);
-                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, 0.3f);
+                rb.velocity = new Vector3(xMovement * moveSpeed, rb.velocity.y, rb.velocity.z);
                 break;
             case PlayerState.Climbing:
-                Vector3 direction = climbingLadder.Item1.GetDirectionEnd(climbingLadder.Item2);
-                if (xMovement > 0) {
-                    transform.Translate(direction * Time.deltaTime * xMovement);
-                } else if (xMovement < 0) {
-                    transform.Translate(direction * Time.deltaTime * -xMovement);
-                } else if (yMovement > 0) {
-                    transform.Translate(direction * Time.deltaTime * yMovement);
-                } else if (yMovement < 0) {
-                    transform.Translate(direction * Time.deltaTime * -yMovement);
-                }
-
+                rb.velocity = new Vector3(xMovement * moveSpeed, yMovement * climbSpeed, rb.velocity.z);
                 break;
             default:
                 ChangeState(PlayerState.Walking);
@@ -80,8 +50,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        xMovement = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        yMovement = Input.GetAxisRaw("Vertical") * moveSpeed;
+        xMovement = Input.GetAxisRaw("Horizontal");
+        yMovement = Input.GetAxisRaw("Vertical");
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -113,6 +83,31 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    private void IgnoreWalls(bool ignore)
+    {
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Wall"), ignore);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Floors"), ignore);
+    }
+
+    public PlayerState ChangeState(PlayerState _state)
+    {
+
+        if (state == PlayerState.Walking && _state == PlayerState.Climbing)
+        {
+            rb.useGravity = false;
+            IgnoreWalls(true);
+            rb.velocity = Vector3.zero;
+        }
+        else if (state == PlayerState.Climbing && _state == PlayerState.Walking)
+        {
+            rb.useGravity = true;
+            IgnoreWalls(false);
+        }
+
+        state = _state;
+        return state;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Room"))
@@ -122,24 +117,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnTriggerStay(Collider other) {
-        if (other.CompareTag("Ladder")) {
-            if (state == PlayerState.Climbing) {
-                Vector3 dir;//= climbingLadder.Item1.GetDirectionEnd(climbingLadder.Item1.GetOtherEnd(other));
-                dir = climbingLadder.Item1.GetColliderPosition(climbingLadder.Item2);
-                if (Vector3.Distance(transform.position, dir) < 1f) {
-                    ChangeState(PlayerState.Walking);
-                    climbingLadder = null;
-                }
-            } else {
-                Ladder ladder = other.gameObject.GetComponent<Ladder>();
-                Vector2 directionLadder = ladder.GetDirectionEnd(ladder.GetOtherEnd(other));
+        if (other.CompareTag("Ladder") || other.CompareTag("Stairs")) {
 
-
-                if ((directionLadder.x > 0.25f && xMovement > 0 || directionLadder.x < -0.25f && xMovement < 0) ||
-                    (directionLadder.y > 0.25f && yMovement > 0 || directionLadder.y < -0.25f && yMovement < 0)) {
-                    climbingLadder = Tuple.Create(ladder, ladder.GetOtherEnd(other));
-                    ChangeState(PlayerState.Climbing);
-                }
+            if (state == PlayerState.Walking)
+            {
+                ChangeState(PlayerState.Climbing);
             }
         }
     }
@@ -149,6 +131,13 @@ public class PlayerController : MonoBehaviour {
         if (other.CompareTag("Room"))
         {
             currentRoom = null;
+        }
+        else if (other.CompareTag("Stairs") || other.CompareTag("Ladder"))
+        {
+            if(state == PlayerState.Climbing)
+            {
+                ChangeState(PlayerState.Walking);
+            }
         }
     }
 }

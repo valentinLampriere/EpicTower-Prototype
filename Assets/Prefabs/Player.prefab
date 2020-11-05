@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1650087175}
   - component: {fileID: 1650087177}
   - component: {fileID: 3047884096220765109}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,5 +131,5 @@ MonoBehaviour:
   - {fileID: 7888818918000252133, guid: b394b61bf7ece3c408e1bd9cb799ea69, type: 3}
   - {fileID: 142224856, guid: 28ae600fdf187884caac085d2e690772, type: 3}
   currentRoom: {fileID: 0}
-  moveSpeed: 3
-  climbSpeed: 1.5
+  moveSpeed: 5
+  climbSpeed: 2.5

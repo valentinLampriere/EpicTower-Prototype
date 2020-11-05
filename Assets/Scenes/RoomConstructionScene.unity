@@ -128,6 +128,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1650087175, guid: 636fc6f3bd7cf2a4985d89656c342894, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2428573621373337543, guid: 636fc6f3bd7cf2a4985d89656c342894,
         type: 3}
       propertyPath: m_Name
@@ -136,7 +140,7 @@ PrefabInstance:
     - target: {fileID: 2428573621373337547, guid: 636fc6f3bd7cf2a4985d89656c342894,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.1466606
+      value: 2.74
       objectReference: {fileID: 0}
     - target: {fileID: 2428573621373337547, guid: 636fc6f3bd7cf2a4985d89656c342894,
         type: 3}
@@ -200,27 +204,10 @@ PrefabInstance:
       objectReference: {fileID: 534044421}
     - target: {fileID: 3047884096220765109, guid: 636fc6f3bd7cf2a4985d89656c342894,
         type: 3}
-      propertyPath: moveSpeed
-      value: 10
+      propertyPath: climbSpeed
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4064026693927604268, guid: 636fc6f3bd7cf2a4985d89656c342894,
-        type: 3}
-      propertyPath: canvasController
-      value: 
-      objectReference: {fileID: 534044421}
-    - target: {fileID: 4064026693927604268, guid: 636fc6f3bd7cf2a4985d89656c342894,
-        type: 3}
-      propertyPath: cameraController
-      value: 
-      objectReference: {fileID: 963194229}
-    - target: {fileID: 4064026693927604268, guid: 636fc6f3bd7cf2a4985d89656c342894,
-        type: 3}
-      propertyPath: speed
-      value: 10
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4059327660993593691, guid: 636fc6f3bd7cf2a4985d89656c342894, type: 3}
-    - {fileID: 4064026693927604268, guid: 636fc6f3bd7cf2a4985d89656c342894, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 636fc6f3bd7cf2a4985d89656c342894, type: 3}
 --- !u!1001 &158344589
 PrefabInstance:
@@ -288,6 +275,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 626340178246211211, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 626340178297188009, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394544902538997549, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394544902555424527, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5069328993262452959, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5069328993310849277, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e42c2eb04ce420f4c9008a8d7e5a529f, type: 3}
@@ -881,7 +898,8 @@ MonoBehaviour:
     type: 3}
   ladderPrefab: {fileID: 987916056032145698, guid: ca607c24695d7f1419babfa292f673e7,
     type: 3}
-  doorPrefab: {fileID: 0}
+  stairsPrefab: {fileID: 987916056032145698, guid: 7587afe3c30992c408c5aa534139997c,
+    type: 3}
   lengthPathLimit: 5
 --- !u!114 &841961702
 MonoBehaviour:

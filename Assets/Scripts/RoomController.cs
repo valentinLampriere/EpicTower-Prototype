@@ -9,7 +9,7 @@ public class RoomController : MonoBehaviour
     [SerializeField] private GameObject roomPreviewPrefab = null;
     [SerializeField] private GameObject roomObjectPrefab = null;
     [SerializeField] private GameObject ladderPrefab = null;
-    [SerializeField] private GameObject doorPrefab = null;
+    [SerializeField] private GameObject stairsPrefab = null;
     [SerializeField] private int lengthPathLimit = 0;
 
     private GameObject roomGO;
@@ -79,7 +79,7 @@ public class RoomController : MonoBehaviour
         return false;
     }
 
-    void CreateStairs(Room room, Room neighRoom)
+    void CreateLadder(Room room, Room neighRoom)
     {
         Vector3 minRoomAnchor;
         Vector3 maxRoomAnchor;
@@ -107,24 +107,24 @@ public class RoomController : MonoBehaviour
             dist = room.Height;
         }
 
-        Vector3 stairsPos = new Vector3(
+        Vector3 ladderPos = new Vector3(
             (Mathf.Max(minRoomAnchor.x, minNeighRoomAnchor.x) + Mathf.Min(maxRoomAnchor.x, maxNeighRoomAnchor.x)) / 2,
             yPos);
 
-        GameObject stairsGO = Instantiate(ladderPrefab, stairsPos, Quaternion.identity);
-        stairsGO.transform.localScale = new Vector3(stairsGO.transform.localScale.x, dist, stairsGO.transform.localScale.z);
-        NavMeshLink links = stairsGO.GetComponentInChildren<NavMeshLink>();
+        GameObject ladderGO = Instantiate(ladderPrefab, ladderPos, Quaternion.identity);
+        ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, dist, ladderGO.transform.localScale.z);
+        NavMeshLink links = ladderGO.GetComponentInChildren<NavMeshLink>();
         links.startPoint = new Vector3(0, -dist / 2, 0);
         links.endPoint = new Vector3(0, dist / 2, 0);
     }
 
-    void CreateLadder(Vector3 roomAnchor, Vector3 neighRoomAnchor)
+    void CreateStairs(Vector3 roomAnchor, Vector3 neighRoomAnchor)
     {
-        Vector3 ladderPos = roomAnchor + neighRoomAnchor;
+        Vector3 stairsPos = roomAnchor + neighRoomAnchor;
         float xOffset = roomAnchor.y > neighRoomAnchor.y ? -0.5f : 0.5f;
         xOffset = roomAnchor.x < neighRoomAnchor.x ? -xOffset : xOffset;
 
-        ladderPos = new Vector3((ladderPos.x / 2) + xOffset, (ladderPos.y / 2) - 0.5f, 0);
+        stairsPos = new Vector3((stairsPos.x / 2) + xOffset, (stairsPos.y / 2) - 0.5f, 0);
 
 
         float angle = Mathf.Atan2(neighRoomAnchor.y - roomAnchor.y, neighRoomAnchor.x - roomAnchor.x);
@@ -132,12 +132,12 @@ public class RoomController : MonoBehaviour
 
         float dist = (roomAnchor - neighRoomAnchor).magnitude;
 
-        GameObject ladderGO = Instantiate(ladderPrefab, ladderPos, Quaternion.identity);
-        ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, dist, ladderGO.transform.localScale.z);
-        NavMeshLink links = ladderGO.GetComponentInChildren<NavMeshLink>();
+        GameObject stairsGO = Instantiate(stairsPrefab, stairsPos, Quaternion.identity);
+        stairsGO.transform.localScale = new Vector3(stairsGO.transform.localScale.x, dist, stairsGO.transform.localScale.z);
+        NavMeshLink links = stairsGO.GetComponentInChildren<NavMeshLink>();
         links.startPoint = new Vector3(0, -dist / 2, 0);
         links.endPoint = new Vector3(0, dist / 2, 0);
-        ladderGO.transform.rotation = Quaternion.Euler(0, 0, angle + 90f);
+        stairsGO.transform.rotation = Quaternion.Euler(0, 0, angle + 90f);
         links.UpdateLink();
     }
 
@@ -173,13 +173,13 @@ public class RoomController : MonoBehaviour
                 // Create door and stairs
                 if (room.CenterPosition.x < neighRoom.CenterPosition.x)
                 {
-                    CreateLadder(
+                    CreateStairs(
                         new Vector3(room.CenterPosition.x + (room.Width / 2) - 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
                         new Vector3(neighRoom.CenterPosition.x - (neighRoom.Width / 2) + 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
                 }
                 else
                 {
-                    CreateLadder(
+                    CreateStairs(
                         new Vector3(room.CenterPosition.x - (room.Width / 2) + 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
                         new Vector3(neighRoom.CenterPosition.x + (neighRoom.Width / 2) - 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
                 }
@@ -197,7 +197,7 @@ public class RoomController : MonoBehaviour
 
                 if (!hasWay)
                 {
-                    CreateStairs(room, neighRoom);
+                    CreateLadder(room, neighRoom);
                     room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
                     neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);
                 }

@@ -63,9 +63,10 @@ GameObject:
   - component: {fileID: 987916056032145702}
   - component: {fileID: 987916056032145697}
   - component: {fileID: 8457456439580301592}
-  m_Layer: 10
-  m_Name: ladder
-  m_TagString: Ladder
+  - component: {fileID: 4925044176236096789}
+  m_Layer: 12
+  m_Name: stairs
+  m_TagString: Stairs
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +112,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4409cf371107d9444b59667fa7600dc2, type: 2}
+  - {fileID: 2100000, guid: fc344298d2a81214e9578dd17e190a43, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -142,7 +143,21 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 0.85
+  m_Radius: 0.25
+  m_Height: 1.25
   m_Direction: 1
-  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!64 &4925044176236096789
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987916056032145698}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

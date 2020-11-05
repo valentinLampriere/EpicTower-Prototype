@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Ladder
   - Room
+  - Stairs
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - Room
   - Ladder
   - Wall
-  - 
-  - 
+  - Stairs
+  - Player
   - 
   - 
   - 
