@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2428573621373337545}
   - component: {fileID: 1650087175}
   - component: {fileID: 1650087177}
-  - component: {fileID: 4059327660993593691}
+  - component: {fileID: 3047884096220765109}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -82,26 +82,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &4064026693927604268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2428573621373337543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a19b1c69d3d6ca4eb3f6fd89e8a3b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraController: {fileID: 0}
-  canvasController: {fileID: 0}
-  IdleTraps:
-  - {fileID: 4720499047607412898, guid: 809bc882d53156d43b4881cb7614052e, type: 3}
-  - {fileID: 7888818918000252133, guid: b394b61bf7ece3c408e1bd9cb799ea69, type: 3}
-  - {fileID: 142224856, guid: 28ae600fdf187884caac085d2e690772, type: 3}
-  speed: 0.5
-  currentRoom: {fileID: 0}
 --- !u!54 &1650087175
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -132,7 +112,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4059327660993593691
+--- !u!114 &3047884096220765109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,8 +121,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2428573621373337543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a19b1c69d3d6ca4eb3f6fd89e8a3b5d, type: 3}
+  m_Script: {fileID: 11500000, guid: fcb42d68595ef9c40bab40339896311c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  climbSpeed: 2
+  cameraController: {fileID: 0}
+  canvasController: {fileID: 0}
+  IdleTraps:
+  - {fileID: 4720499047607412898, guid: 809bc882d53156d43b4881cb7614052e, type: 3}
+  - {fileID: 7888818918000252133, guid: b394b61bf7ece3c408e1bd9cb799ea69, type: 3}
+  - {fileID: 142224856, guid: 28ae600fdf187884caac085d2e690772, type: 3}
+  currentRoom: {fileID: 0}
+  moveSpeed: 3
+  climbSpeed: 1.5

@@ -12,6 +12,16 @@ public class PlayerController : MonoBehaviour {
 
     PlayerState state = PlayerState.Walking;
 
+    public CameraController cameraController;
+    public CanvasController canvasController;
+
+    [SerializeField]
+    private List<IdleTrapAbstract> IdleTraps = new List<IdleTrapAbstract>();
+    private int currentTrap = 0;
+
+    [SerializeField]
+    private Room currentRoom = null;
+
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float climbSpeed = 1.5f;
 
@@ -26,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     void Start() {
         rb = GetComponent<Rigidbody>();
         cc = GetComponent<CapsuleCollider>();
+        canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
     }
 
     public PlayerState ChangeState(PlayerState _state) {
@@ -71,6 +82,43 @@ public class PlayerController : MonoBehaviour {
     void Update() {
         xMovement = Input.GetAxisRaw("Horizontal") * moveSpeed;
         yMovement = Input.GetAxisRaw("Vertical") * moveSpeed;
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            currentTrap += 1;
+            if (currentTrap > IdleTraps.Count - 1)
+            {
+                currentTrap = 0;
+            }
+
+            canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (currentRoom)
+            {
+                currentRoom.PlaceTrap(IdleTraps[currentTrap].gameObject);
+            }
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            cameraController.ZoomIn(transform.position);
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            cameraController.ZoomOut();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Room"))
+        {
+            currentRoom = other.GetComponent<Room>();
+        }
     }
 
     private void OnTriggerStay(Collider other) {
@@ -96,14 +144,11 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    /*private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Ladder")) {
-            if (state == PlayerState.Climbing) {
-                if (climbingLadder.Item2 == other) {
-                    ChangeState(PlayerState.Walking);
-                    climbingLadder = null;
-                }
-            }
+    private void OnTriggerExit(Collider other) {
+        
+        if (other.CompareTag("Room"))
+        {
+            currentRoom = null;
         }
-    }*/
+    }
 }
