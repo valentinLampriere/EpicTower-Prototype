@@ -134,6 +134,7 @@ public class RoomController : MonoBehaviour
         links.startPoint = new Vector3(0, -dist / 2, 0);
         links.endPoint = new Vector3(0, dist / 2, 0);
         ladderGO.transform.rotation = Quaternion.Euler(0, 0, angle + 90f);
+        links.UpdateLink();
     }
 
     // returns 0 if horizontal neighbour, 1 if vertical

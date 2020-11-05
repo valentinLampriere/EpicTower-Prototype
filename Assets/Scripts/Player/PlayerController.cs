@@ -49,10 +49,10 @@ public class PlayerController : MonoBehaviour {
 
         switch (state) {
             case PlayerState.Moving:
-                rb.velocity += Vector3.right * x * speed;
+                rb.velocity = new Vector3(x * speed, rb.velocity.y, rb.velocity.z);
                 break;
             case PlayerState.Climbing:
-                rb.velocity += Vector3.up * y * speed;
+                rb.velocity = new Vector3(rb.velocity.x, y * speed, rb.velocity.z);
                 break;
             default:
                 break;
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             currentTrap += 1;
             if (currentTrap > IdleTraps.Count - 1)
