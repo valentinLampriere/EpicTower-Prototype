@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GameManager : MonoBehaviour
+public class TowerConstructManager : MonoBehaviour
 {
     [SerializeField] GameObject towerPrefab = null;
     [SerializeField] NavMeshSurface navMeshSurface = null;

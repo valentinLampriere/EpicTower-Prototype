@@ -32,31 +32,6 @@ public class Grid : MonoBehaviour
         }
     }
 
-    //bool IsPossibleNeighbour(List<Room> neighbourRooms)
-    //{
-    //    while(neighbourRooms.Count > 0)
-    //    {
-    //        Room crtRoom = neighbourRooms[0];
-    //        neighbourRooms.RemoveAt(0);
-
-    //        foreach (Room room in neighbourRooms)
-    //        {
-    //            if (crtRoom.Equals(room))
-    //            {
-    //                return true;
-    //            }
-    //        }
-    //    }
-
-    //    return false;
-    //}
-
-    //bool IsVerticeRoomCell(Vector3 cellPos, Vector3 roomCenter, Room room)
-    //{
-    //    return ((cellPos.x == (roomCenter.x - room.Width / 2) || cellPos.x == (roomCenter.x + (room.Width / 2) - 1))
-    //        && (cellPos.y == (roomCenter.y - room.Height / 2) || cellPos.y == (roomCenter.y + (room.Height / 2) - 1)));
-    //}
-
     public void AddRoomInGrid(Vector3 roomCenter, Room room)
     {
         for (float x = roomCenter.x - (room.Width / 2) ; x < roomCenter.x + (room.Width / 2); x += cellsSize)
