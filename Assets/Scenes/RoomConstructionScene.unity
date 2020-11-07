@@ -855,7 +855,7 @@ GameObject:
   - component: {fileID: 841961701}
   - component: {fileID: 841961700}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: TowerConstructManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -888,10 +888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1029e8992f092cf4cb8bc61824da1038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPreviewPrefab: {fileID: 5542931255425188740, guid: e932b811306061145b6a2209c2f97989,
-    type: 3}
-  roomObjectPrefab: {fileID: 5542931255425188740, guid: 339d24f3de55ebd4e8cad1ce45957102,
-    type: 3}
   ladderPrefab: {fileID: 987916056032145698, guid: ca607c24695d7f1419babfa292f673e7,
     type: 3}
   stairsPrefab: {fileID: 987916056032145698, guid: 7587afe3c30992c408c5aa534139997c,
@@ -910,6 +906,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 995097773}
+  roomPreviewPrefab: {fileID: 5542931255425188740, guid: e932b811306061145b6a2209c2f97989,
+    type: 3}
+  roomObjectPrefab: {fileID: 5542931255425188740, guid: 339d24f3de55ebd4e8cad1ce45957102,
+    type: 3}
   navMeshSurface: {fileID: 839904497}
 --- !u!4 &841961703
 Transform:

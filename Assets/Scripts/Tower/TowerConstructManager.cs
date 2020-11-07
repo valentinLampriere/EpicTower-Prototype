@@ -5,15 +5,23 @@ using UnityEngine.AI;
 
 public class TowerConstructManager : MonoBehaviour
 {
-    [SerializeField] GameObject towerPrefab = null;
-    [SerializeField] NavMeshSurface navMeshSurface = null;
+    [SerializeField] private GameObject towerPrefab = null;
+    [SerializeField] private GameObject roomPreviewPrefab = null;
+    [SerializeField] private GameObject roomObjectPrefab = null;
+    [SerializeField] private NavMeshSurface navMeshSurface = null;
 
+    private Camera mainCamera;
     private Grid grid;
+    private GameObject roomGO;
+    private GameObject roomPreviewGO;
     private RoomController roomController;
+
+    private bool activePreview;
 
     // Start is called before the first frame update
     void Start()
     {
+        mainCamera = Camera.main;
         grid = GetComponent<Grid>();
         roomController = GetComponent<RoomController>();
 
@@ -25,22 +33,31 @@ public class TowerConstructManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (roomController.ActivePreview)
+            if (activePreview)
             {
-                roomController.CreateRoom();
+                CreateRoom();
             }
             else
             {
-                roomController.ActivePreview = true;
-                roomController.CreateRoomPreview();
+                activePreview = true;
+                CreateRoomPreview();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            roomController.ActivePreview = false;
-            roomController.DestroyRoomPreview();
+            activePreview = false;
+            DestroyRoomPreview();
         }
+
+        if (roomPreviewGO != null && activePreview)
+        {
+            roomPreviewGO.transform.position = grid.SnapToGrid(GetMousePositionInWorld());
+        }
+    }
+    private Vector3 GetMousePositionInWorld()
+    {
+        return mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
     }
 
     void InitTowerRooms()
@@ -51,11 +68,39 @@ public class TowerConstructManager : MonoBehaviour
         {
             Vector3 snpPos = grid.SnapToGrid(room.transform.position);
             room.transform.position = snpPos;
-            grid.AddRoomInGrid(snpPos, room);
-            room.NeighbourRooms = grid.FindNeighbourRooms(room);
-            roomController.AddRoomToHisNeighbours(room);
-            roomController.LinkToNeighbourRooms(room);
+            SetupRoom(snpPos, room);
         }
+    }
+
+    private void CreateRoomPreview()
+    {
+        roomPreviewGO = Instantiate(roomPreviewPrefab, grid.SnapToGrid(GetMousePositionInWorld()), Quaternion.identity);
+    }
+
+    private void DestroyRoomPreview()
+    {
+        Destroy(roomPreviewGO);
+    }
+
+    private void CreateRoom()
+    {
+        Vector3 roomCenter = grid.SnapToGrid(GetMousePositionInWorld());
+        Room roomPrefab = roomObjectPrefab.GetComponent<Room>();
+
+        if (grid.CanConstructRoom(roomCenter, roomPrefab))
+        {
+            roomGO = Instantiate(roomObjectPrefab, roomCenter, Quaternion.identity);
+            Room room = roomGO.GetComponent<Room>();
+            SetupRoom(roomCenter, room);
+        }
+    }
+
+    private void SetupRoom(Vector3 roomPos, Room room)
+    {
+        grid.AddRoomInGrid(roomPos, room);
+        room.NeighbourRooms = grid.FindNeighbourRooms(room);
+        roomController.AddRoomToHisNeighbours(room);
+        roomController.LinkToNeighbourRooms(room);
     }
 
     public void BuildNavMesh()
