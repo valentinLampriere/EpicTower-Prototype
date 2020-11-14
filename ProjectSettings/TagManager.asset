@@ -8,6 +8,8 @@ TagManager:
   - Ladder
   - Room
   - Stairs
+  - Ceil
+  - Gallery
   layers:
   - Default
   - TransparentFX
@@ -23,7 +25,7 @@ TagManager:
   - Wall
   - Stairs
   - Player
-  - 
+  - Gallery
   - 
   - 
   - 

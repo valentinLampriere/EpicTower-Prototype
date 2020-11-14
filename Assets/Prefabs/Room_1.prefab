@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 2307024032569018282}
   m_Layer: 11
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Ceil
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -291,9 +291,9 @@ GameObject:
   - component: {fileID: 5654892129115088585}
   - component: {fileID: 6582878919917048374}
   - component: {fileID: 1893374127763118291}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Gallery
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -307,7 +307,7 @@ Transform:
   m_GameObject: {fileID: 5401055198026822908}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0.75}
-  m_LocalScale: {x: 4, y: 0.1, z: 1.5}
+  m_LocalScale: {x: 3, y: 0.1, z: 1.5}
   m_Children: []
   m_Father: {fileID: 1499739303906712971}
   m_RootOrder: 5
@@ -383,6 +383,7 @@ GameObject:
   - component: {fileID: 1499739303906712971}
   - component: {fileID: 5901287209009085890}
   - component: {fileID: 2372275651044815326}
+  - component: {fileID: 2740981996514878079}
   m_Layer: 9
   m_Name: Room_1
   m_TagString: Room
@@ -440,6 +441,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 3, z: 2}
   m_Center: {x: 0, y: 0, z: 0.5}
+--- !u!114 &2740981996514878079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542931255425188740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9567e39eb571c241a2776704f62eeb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6798959461258343095
 GameObject:
   m_ObjectHideFlags: 0
