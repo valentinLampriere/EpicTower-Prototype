@@ -89,13 +89,13 @@ public class RoomController : MonoBehaviour
         links.endPoint = new Vector3(0, dist / 2, 0);
     }
 
-    void CreateFloorStairs(Vector3 roomAnchor, Vector3 neighRoomAnchor)
+    void CreateStairs(Vector3 roomAnchor, Vector3 neighRoomAnchor)
     {
         Vector3 stairsPos = roomAnchor + neighRoomAnchor;
         float xOffset = roomAnchor.y > neighRoomAnchor.y ? -0.5f : 0.5f;
         xOffset = roomAnchor.x < neighRoomAnchor.x ? -xOffset : xOffset;
 
-        stairsPos = new Vector3((stairsPos.x / 2) + xOffset, (stairsPos.y / 2) - 0.5f, (stairsPos.z / 2));
+        stairsPos = new Vector3((stairsPos.x / 2) + xOffset, (stairsPos.y / 2) - 0.5f, 0);
 
 
         float angle = Mathf.Atan2(neighRoomAnchor.y - roomAnchor.y, neighRoomAnchor.x - roomAnchor.x);
@@ -110,30 +110,6 @@ public class RoomController : MonoBehaviour
         links.endPoint = new Vector3(0, dist / 2, 0);
         stairsGO.transform.rotation = Quaternion.Euler(0, 0, angle + 90f);
         links.UpdateLink();
-    }
-
-    void CreateGalleryStairs(Vector3 roomAnchor, Vector3 neighRoomAnchor)
-    {
-        Vector3 stairsPos = roomAnchor + neighRoomAnchor;
-        stairsPos = new Vector3((stairsPos.x / 2), (stairsPos.y / 2), (stairsPos.z / 2));
-
-
-        float angle = Mathf.Atan2(neighRoomAnchor.y - roomAnchor.y, neighRoomAnchor.x - roomAnchor.x);
-        angle = Mathf.Rad2Deg * angle;
-
-        float dist = (roomAnchor - neighRoomAnchor).magnitude;
-
-        GameObject stairsGO = Instantiate(stairsPrefab, stairsPos, Quaternion.identity);
-        stairsGO.transform.localScale = new Vector3(stairsGO.transform.localScale.x, dist, stairsGO.transform.localScale.z);
-        stairsGO.transform.rotation = Quaternion.Euler(0, 0, angle + 90f);
-    }
-
-    void ScaleGallery(Transform gallery, Vector3 offset)
-    {
-        gallery.localScale += new Vector3(-0.5f, 0, 0);
-        gallery.localPosition += offset;
-
-        Debug.Log(gallery.localScale);
     }
 
     // returns 0 if horizontal neighbour, 1 if vertical
@@ -166,32 +142,17 @@ public class RoomController : MonoBehaviour
             if (relPos == 0)
             {
                 // Create door and stairs
-                if (room.CenterPosition.x < neighRoom.CenterPosition.x) // Neighbour on right side
+                if (room.CenterPosition.x < neighRoom.CenterPosition.x)
                 {
-                    CreateFloorStairs(
-                        new Vector3(room.CenterPosition.x + (room.Width / 2) - 1, room.CenterPosition.y - (room.Height / 2) + 1, -1),
-                        new Vector3(neighRoom.CenterPosition.x - (neighRoom.Width / 2) + 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, -1));
-
-                    CreateGalleryStairs(
-                        new Vector3(room.CenterPosition.x + (room.Width / 2) - 1, room.CenterPosition.y + (room.Height / 2) - 1.5f, 1),
-                        new Vector3(neighRoom.CenterPosition.x - (neighRoom.Width / 2) + 1, neighRoom.CenterPosition.y + (neighRoom.Height / 2) - 1.5f, 1));
-
-                    Debug.Log(room.GetComponent<ChildSearcher>().GetObjectWithTag("Gallery"));
-                    ScaleGallery(room.GetComponent<ChildSearcher>().GetObjectWithTag("Gallery"), new Vector3(-0.25f, 0, 0));
-                    ScaleGallery(neighRoom.GetComponent<ChildSearcher>().GetObjectWithTag("Gallery"), new Vector3(0.25f, 0, 0));
+                    CreateStairs(
+                        new Vector3(room.CenterPosition.x + (room.Width / 2) - 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
+                        new Vector3(neighRoom.CenterPosition.x - (neighRoom.Width / 2) + 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
                 }
-                else // Neighbour on left side
+                else
                 {
-                    CreateFloorStairs(
-                        new Vector3(room.CenterPosition.x - (room.Width / 2) + 1, room.CenterPosition.y - (room.Height / 2) + 1, -1),
-                        new Vector3(neighRoom.CenterPosition.x + (neighRoom.Width / 2) - 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, -1));
-
-                    CreateGalleryStairs(
-                        new Vector3(room.CenterPosition.x - (room.Width / 2) + 1, room.CenterPosition.y + (room.Height / 2) - 1.5f, 1),
-                        new Vector3(neighRoom.CenterPosition.x + (neighRoom.Width / 2) - 1, neighRoom.CenterPosition.y + (neighRoom.Height / 2) - 1.5f, 1));
-
-                    ScaleGallery(room.GetComponent<ChildSearcher>().GetObjectWithTag("Gallery"), new Vector3(0.25f, 0, 0));
-                    ScaleGallery(neighRoom.GetComponent<ChildSearcher>().GetObjectWithTag("Gallery"), new Vector3(-0.25f, 0, 0));
+                    CreateStairs(
+                        new Vector3(room.CenterPosition.x - (room.Width / 2) + 1, room.CenterPosition.y - (room.Height / 2) + 1, 0),
+                        new Vector3(neighRoom.CenterPosition.x + (neighRoom.Width / 2) - 1, neighRoom.CenterPosition.y - (neighRoom.Height / 2) + 1, 0));
                 }
 
                 room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
