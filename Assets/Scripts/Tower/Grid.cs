@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,13 +10,13 @@ public class Grid : MonoBehaviour
 
     internal Dictionary<Vector3, Room> DicCells { get; private set; }
 
-    void Awake()
+    private void Awake()
     {
         DicCells = new Dictionary<Vector3, Room>();
         InitGrid();
     }
 
-    void InitGrid()
+    private void InitGrid()
     {
         Vector3 gridBase = transform.position;
         gridBase = new Vector3(Mathf.FloorToInt(gridBase.x), Mathf.FloorToInt(gridBase.y), 0);
@@ -34,13 +33,13 @@ public class Grid : MonoBehaviour
 
     public void AddRoomInGrid(Vector3 roomCenter, Room room)
     {
-        for (float x = roomCenter.x - (room.Width / 2) ; x < roomCenter.x + (room.Width / 2); x += cellsSize)
+        for (float x = roomCenter.x - (room.Width / 2); x < roomCenter.x + (room.Width / 2); x += cellsSize)
         {
             for (float y = roomCenter.y - (room.Height / 2); y < roomCenter.y + (room.Height / 2); y += cellsSize)
             {
                 Vector3 cellPos = new Vector3(x, y, 0);
 
-                if(DicCells.ContainsKey(cellPos))
+                if (DicCells.ContainsKey(cellPos))
                 {
                     room.CenterPosition = roomCenter;
                     DicCells[cellPos] = room;
@@ -74,7 +73,7 @@ public class Grid : MonoBehaviour
 
     public bool CanConstructRoom(Vector3 roomCenter, Room room)
     {
-        if(!IsEmptySpace(roomCenter, room))
+        if (!IsEmptySpace(roomCenter, room))
         {
             return false;
         }
@@ -160,7 +159,7 @@ public class Grid : MonoBehaviour
     {
         Vector3 snpPos = new Vector3(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y), 0);
 
-        if(DicCells.ContainsKey(snpPos))
+        if (DicCells.ContainsKey(snpPos))
         {
             return snpPos;
         }
@@ -170,7 +169,7 @@ public class Grid : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 

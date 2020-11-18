@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
-
-    public enum PlayerState {
+public class PlayerController : MonoBehaviour
+{
+    public enum PlayerState
+    {
         Walking,
         Climbing
     }
 
-    PlayerState state = PlayerState.Walking;
+    private PlayerState state = PlayerState.Walking;
 
     public CameraController cameraController;
     public CanvasController canvasController;
 
     [SerializeField]
     private List<IdleTrapAbstract> IdleTraps = new List<IdleTrapAbstract>();
+
     private int currentTrap = 0;
 
     [SerializeField]
@@ -28,28 +28,34 @@ public class PlayerController : MonoBehaviour {
     private float xMovement;
     private float yMovement;
 
-    Rigidbody rb;
+    private Rigidbody rb;
 
-    void Start() {
+    private void Start()
+    {
         rb = GetComponent<Rigidbody>();
         canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
     }
 
-    private void FixedUpdate() {
-        switch (state) {
+    private void FixedUpdate()
+    {
+        switch (state)
+        {
             case PlayerState.Walking:
                 rb.velocity = new Vector3(xMovement * moveSpeed, rb.velocity.y, rb.velocity.z);
                 break;
+
             case PlayerState.Climbing:
                 rb.velocity = new Vector3(xMovement * moveSpeed, yMovement * climbSpeed, rb.velocity.z);
                 break;
+
             default:
                 ChangeState(PlayerState.Walking);
                 break;
         }
     }
 
-    void Update() {
+    private void Update()
+    {
         xMovement = Input.GetAxisRaw("Horizontal");
         yMovement = Input.GetAxisRaw("Vertical");
 
@@ -72,7 +78,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButton(1))
+        /*if (Input.GetMouseButton(1))
         {
             cameraController.ZoomIn(transform.position);
         }
@@ -80,7 +86,9 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButtonUp(1))
         {
             cameraController.ZoomOut();
-        }
+        }*/
+        cameraController.trPlayer = transform;
+
     }
 
     private void IgnoreWalls(bool ignore)
@@ -91,7 +99,6 @@ public class PlayerController : MonoBehaviour {
 
     public PlayerState ChangeState(PlayerState _state)
     {
-
         if (state == PlayerState.Walking && _state == PlayerState.Climbing)
         {
             rb.useGravity = false;
@@ -116,9 +123,10 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnTriggerStay(Collider other) {
-        if (other.CompareTag("Ladder") || other.CompareTag("Stairs")) {
-
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Ladder") || other.CompareTag("Stairs"))
+        {
             if (state == PlayerState.Walking)
             {
                 ChangeState(PlayerState.Climbing);
@@ -126,15 +134,15 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnTriggerExit(Collider other) {
-        
+    private void OnTriggerExit(Collider other)
+    {
         if (other.CompareTag("Room"))
         {
             currentRoom = null;
         }
         else if (other.CompareTag("Stairs") || other.CompareTag("Ladder"))
         {
-            if(state == PlayerState.Climbing)
+            if (state == PlayerState.Climbing)
             {
                 ChangeState(PlayerState.Walking);
             }

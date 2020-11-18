@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,9 +9,9 @@ public class RoomController : MonoBehaviour
     [SerializeField] private GameObject stairsPrefab = null;
     [SerializeField] private int lengthPathLimit = 0;
 
-    bool FindWayToVerticalNeighbour(Room firstNeighbour, Room room, Room neighRoom, List<Room> visitedRooms, int pathLength, List<Room> pathRooms, bool addToVisited = true)
+    private bool FindWayToVerticalNeighbour(Room firstNeighbour, Room room, Room neighRoom, List<Room> visitedRooms, int pathLength, List<Room> pathRooms, bool addToVisited = true)
     {
-        if(addToVisited)
+        if (addToVisited)
         {
             visitedRooms.Add(neighRoom);
             pathLength++;
@@ -24,7 +23,7 @@ public class RoomController : MonoBehaviour
         }
         else
         {
-            if(pathLength < lengthPathLimit)
+            if (pathLength < lengthPathLimit)
             {
                 foreach (Tuple<Room, bool> neighRoomTuple in neighRoom.NeighbourRooms)
                 {
@@ -36,7 +35,7 @@ public class RoomController : MonoBehaviour
                 }
             }
 
-            if(!neighRoom.Equals(firstNeighbour))
+            if (!neighRoom.Equals(firstNeighbour))
             {
                 // Get back to the previous room
                 pathLength--;
@@ -50,7 +49,7 @@ public class RoomController : MonoBehaviour
         return false;
     }
 
-    void CreateLadder(Room room, Room neighRoom)
+    private void CreateLadder(Room room, Room neighRoom)
     {
         Vector3 minRoomAnchor;
         Vector3 maxRoomAnchor;
@@ -89,14 +88,13 @@ public class RoomController : MonoBehaviour
         links.endPoint = new Vector3(0, dist / 2, 0);
     }
 
-    void CreateStairs(Vector3 roomAnchor, Vector3 neighRoomAnchor)
+    private void CreateStairs(Vector3 roomAnchor, Vector3 neighRoomAnchor)
     {
         Vector3 stairsPos = roomAnchor + neighRoomAnchor;
         float xOffset = roomAnchor.y > neighRoomAnchor.y ? -0.5f : 0.5f;
         xOffset = roomAnchor.x < neighRoomAnchor.x ? -xOffset : xOffset;
 
         stairsPos = new Vector3((stairsPos.x / 2) + xOffset, (stairsPos.y / 2) - 0.5f, 0);
-
 
         float angle = Mathf.Atan2(neighRoomAnchor.y - roomAnchor.y, neighRoomAnchor.x - roomAnchor.x);
         angle = Mathf.Rad2Deg * angle;
@@ -113,7 +111,7 @@ public class RoomController : MonoBehaviour
     }
 
     // returns 0 if horizontal neighbour, 1 if vertical
-    int NeighbourRelativePosition(Room room, Room neighRoom)
+    private int NeighbourRelativePosition(Room room, Room neighRoom)
     {
         Vector3 neighRoomFirstVertice = neighRoom.CenterPosition - new Vector3(neighRoom.Width / 2, neighRoom.Height / 2, 0);
         Vector3 neighRoomLastVertice = neighRoom.CenterPosition + new Vector3(neighRoom.Width / 2, neighRoom.Height / 2, 0);
@@ -122,7 +120,7 @@ public class RoomController : MonoBehaviour
         {
             return 0;
         }
-        else if(neighRoomFirstVertice.y == room.CenterPosition.y + (room.Height / 2) || neighRoomLastVertice.y == room.CenterPosition.y - (room.Height / 2))
+        else if (neighRoomFirstVertice.y == room.CenterPosition.y + (room.Height / 2) || neighRoomLastVertice.y == room.CenterPosition.y - (room.Height / 2))
         {
             return 1;
         }
@@ -178,7 +176,7 @@ public class RoomController : MonoBehaviour
 
     public void AddRoomToHisNeighbours(Room room)
     {
-        foreach (Tuple<Room,bool> neighRoomTuple in room.NeighbourRooms)
+        foreach (Tuple<Room, bool> neighRoomTuple in room.NeighbourRooms)
         {
             neighRoomTuple.Item1.NeighbourRooms.Add(Tuple.Create(room, false));
         }
