@@ -15,10 +15,12 @@ public class CameraController : MonoBehaviour
 
     [HideInInspector]
     public Transform trPlayer;
+    Vector3 positionSaved;
 
     private void Start()
     {
         lockPlayer = false;
+        positionSaved = transform.position;
     }
 
     private void Update()
@@ -30,14 +32,22 @@ public class CameraController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime * 10;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime * 10;
 
-        
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             lockPlayer = !lockPlayer;
+            if (!lockPlayer)
+            {
+                transform.position = positionSaved;
+            }
+            else
+            {
+                positionSaved = transform.position;
+                transform.position = new Vector3(transform.position.x, transform.position.y, maxFov);
+            }
+
         }
 
-        if(lockPlayer)
+        if (lockPlayer)
         {
             transform.position = new Vector3(trPlayer.position.x, trPlayer.position.y, transform.position.z);
         }
@@ -45,7 +55,6 @@ public class CameraController : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x - mouseX, transform.position.y - mouseY, transform.position.z);
         }
-
     }
 
     public void ZoomIn(Vector3 zoomPosition)
