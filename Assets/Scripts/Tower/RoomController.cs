@@ -93,7 +93,7 @@ public class RoomController : MonoBehaviour
         ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
         NavMeshLink links = ladderGO.GetComponentInChildren<NavMeshLink>();
         links.startPoint = new Vector3(0, -ladderLength / 2, 0);
-        links.endPoint = new Vector3(0, ladderLength / 2, 0);
+        links.endPoint = new Vector3(0, ladderLength / 2 + 0.1f, 0);
     }
 
     void CreateHorizontalGalleryGateway(Room downRoom, Room upRoom)
