@@ -81,14 +81,13 @@ public class RoomController : MonoBehaviour
     void CreateHorizontalLadder(Room downRoom, Room upRoom)
     {
         float ladderAnchorX = downRoom.CenterPosition.x < upRoom.CenterPosition.x ?
-            downRoom.CenterPosition.x + downRoom.Width / 2 - 1 : downRoom.CenterPosition.x - downRoom.Width / 2 + 1;
+            downRoom.CenterPosition.x + (downRoom.Width / 2) - 0.75f : downRoom.CenterPosition.x - (downRoom.Width / 2) + 0.75f;
 
         Vector3 downAnchor = new Vector3(ladderAnchorX, downRoom.CenterPosition.y - downRoom.Height / 2 + 0.5f, -1);
         Vector3 upAnchor = new Vector3(ladderAnchorX, upRoom.CenterPosition.y - upRoom.Height / 2 + 0.5f, -1);
 
         Vector3 ladderPos = (downAnchor + upAnchor) / 2;
-        float ladderLength = upAnchor.y - downAnchor.y; 
-    
+        float ladderLength = upAnchor.y - downAnchor.y;
 
         GameObject ladderGO = Instantiate(ladderEnemyPrefab, ladderPos, Quaternion.identity);
         ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
@@ -128,7 +127,7 @@ public class RoomController : MonoBehaviour
     void CreateHorizontalGalleryLadder(Room downRoom, Room upRoom)
     {
         float ladderAnchorX = downRoom.CenterPosition.x < upRoom.CenterPosition.x ?
-            upRoom.CenterPosition.x - upRoom.Width / 2 + 1 : upRoom.CenterPosition.x + upRoom.Width / 2 - 1;
+            upRoom.CenterPosition.x - upRoom.Width / 2 + 0.75f : upRoom.CenterPosition.x + upRoom.Width / 2 - 0.75f;
 
         Vector3 downAnchor = new Vector3(ladderAnchorX, downRoom.CenterPosition.y + downRoom.Height / 2 - 1.5f, 1);
         Vector3 upAnchor = new Vector3(ladderAnchorX, upRoom.CenterPosition.y + upRoom.Height / 2 - 1.5f, 1);
@@ -139,6 +138,11 @@ public class RoomController : MonoBehaviour
 
         GameObject ladderGO = Instantiate(ladderPlayerPrefab, ladderPos, Quaternion.identity);
         ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
+    }
+
+    void RemoveWallFromRoom(Room room, string sideWall)
+    {
+        Destroy(room.GetComponent<ChildSearcher>().FindChildByName(sideWall).gameObject);
     }
 
     int NeighbourRelativePosition(Room room, Room neighRoom) // returns 0 if horizontal neighbour, 1 if vertical
@@ -192,6 +196,16 @@ public class RoomController : MonoBehaviour
                     CreateHorizontalGalleryGateway(room, neighRoom);
                 }
 
+                if(room.CenterPosition.x < neighRoom.CenterPosition.x)
+                {
+                    RemoveWallFromRoom(room, "RightWall");
+                    RemoveWallFromRoom(neighRoom, "LeftWall");
+                }
+                else if(room.CenterPosition.x > neighRoom.CenterPosition.x)
+                {
+                    RemoveWallFromRoom(neighRoom, "RightWall");
+                    RemoveWallFromRoom(room, "LeftWall");
+                }
 
                 room.NeighbourRooms[i] = Tuple.Create(neighRoom, true);
                 neighRoom.NeighbourRooms[neighRoom.GetTupleIndexOfRoom(room)] = Tuple.Create(room, true);

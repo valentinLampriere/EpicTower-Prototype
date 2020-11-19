@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5003859807061228190}
   - component: {fileID: 3319722567532862640}
   m_Layer: 11
-  m_Name: Cube (3)
+  m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 7202610447742804551}
   - component: {fileID: 5453519456707311649}
   m_Layer: 11
-  m_Name: Cube (2)
+  m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 8919245445948249616}
   - component: {fileID: 2307024032569018282}
   m_Layer: 11
-  m_Name: Cube (1)
+  m_Name: Ceil
   m_TagString: Ceil
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 6582878919917048374}
   - component: {fileID: 1893374127763118291}
   m_Layer: 14
-  m_Name: Cube (4)
+  m_Name: Gallery
   m_TagString: Gallery
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -383,6 +383,7 @@ GameObject:
   - component: {fileID: 1499739303906712971}
   - component: {fileID: 5901287209009085890}
   - component: {fileID: 2372275651044815326}
+  - component: {fileID: 4193430537042730206}
   m_Layer: 9
   m_Name: Room_1
   m_TagString: Room
@@ -440,6 +441,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 3, z: 2}
   m_Center: {x: 0, y: 0, z: 0.5}
+--- !u!114 &4193430537042730206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542931255425188740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9567e39eb571c241a2776704f62eeb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6798959461258343095
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +466,7 @@ GameObject:
   - component: {fileID: 712699668121512363}
   - component: {fileID: 8303221573738313269}
   m_Layer: 8
-  m_Name: Cube
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -546,7 +559,7 @@ GameObject:
   - component: {fileID: 3460622545856796262}
   - component: {fileID: 8974185010062918381}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
