@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour {
     private void IgnoreWalls(bool ignore)
     {
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Wall"), ignore);
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Floors"), ignore);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Gallery"), ignore);
     }
 
     public PlayerState ChangeState(PlayerState _state)
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnTriggerStay(Collider other) {
-        if (other.CompareTag("Ladder") || other.CompareTag("Stairs")) {
+        if (other.CompareTag("PlayerLadder") || other.CompareTag("PlayerGateway")) {
 
             if (state == PlayerState.Walking)
             {
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour {
         {
             currentRoom = null;
         }
-        else if (other.CompareTag("Stairs") || other.CompareTag("Ladder"))
+        else if (other.CompareTag("PlayerGateway") || other.CompareTag("PlayerLadder"))
         {
             if(state == PlayerState.Climbing)
             {

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8457456439580301592}
   m_Layer: 10
   m_Name: ladderPlayer
-  m_TagString: Ladder
+  m_TagString: PlayerLadder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,6 +91,6 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.3
-  m_Height: 0.85
+  m_Height: 0.91955113
   m_Direction: 1
-  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Center: {x: 0, y: 0.18477559, z: 0}

@@ -10,6 +10,8 @@ TagManager:
   - Stairs
   - Ceil
   - Gallery
+  - PlayerLadder
+  - PlayerGateway
   layers:
   - Default
   - TransparentFX
