@@ -954,7 +954,6 @@ MonoBehaviour:
     type: 3}
   stairsPrefab: {fileID: 987916056032145698, guid: 7587afe3c30992c408c5aa534139997c,
     type: 3}
-  lengthPathLimit: 5
 --- !u!114 &841961702
 MonoBehaviour:
   m_ObjectHideFlags: 0
