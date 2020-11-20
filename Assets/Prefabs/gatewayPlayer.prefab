@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 987916056032145697}
   - component: {fileID: 8457456439580301592}
   - component: {fileID: 4925044176236096789}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: gatewayPlayer
   m_TagString: PlayerGateway
   m_Icon: {fileID: 0}

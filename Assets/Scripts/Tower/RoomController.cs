@@ -143,7 +143,11 @@ public class RoomController : MonoBehaviour
 
     void RemoveWallFromRoom(Room room, string sideWall)
     {
-        Destroy(room.GetComponent<ChildSearcher>().FindChildByName(sideWall).gameObject);
+        Transform wallTransform = room.GetComponent<ChildSearcher>().FindChildByName(sideWall);
+        if(wallTransform != null)
+        {
+            Destroy(wallTransform.gameObject);
+        }
     }
 
     void CheckForDoor(Room room)
