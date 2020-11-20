@@ -10,6 +10,7 @@ public class RoomController : MonoBehaviour
     [SerializeField] private GameObject gatewayEnemyPrefab = null;
     [SerializeField] private GameObject ladderPlayerPrefab = null;
     [SerializeField] private GameObject gatewayPlayerPrefab = null;
+    [SerializeField] private GameObject doorPrefab = null;
 
     //void CreateLadder(Room room, Room neighRoom)
     //{
@@ -145,6 +146,41 @@ public class RoomController : MonoBehaviour
         Destroy(room.GetComponent<ChildSearcher>().FindChildByName(sideWall).gameObject);
     }
 
+    void CheckForDoor(Room room)
+    {
+        if(!room.HasHorizontalNeighbourOn(false)) // no more horizontal neighbour on right
+        {
+            CreateDoor(room, false); 
+        }
+    }
+
+    void TryToLinkDoor(Room room)
+    {
+        foreach(Tuple<Room, bool> neighRoom in room.NeighbourRooms)
+        {
+
+        }
+    }
+
+    void CreateDoor(Room room, bool left)
+    {
+        float doorX = left ? room.CenterPosition.x - room.Width / 2 + 1 : room.CenterPosition.x + room.Width / 2 - 1;
+        Vector3 doorPosition = new Vector3(doorX, room.CenterPosition.y - room.Height / 2 + 0.5f, -1);
+        Instantiate(doorPrefab, doorPosition, Quaternion.identity);
+    }
+
+    void CreateVerticalLadder(Room downRoom, Room upRoom, float posX)
+    {
+        Vector3 ladderPos = new Vector3(
+            posX,
+            ((downRoom.CenterPosition.y + (downRoom.Height / 2) - 1.5f) + (upRoom.CenterPosition.y + (upRoom.Height / 2) - 1.5f)) / 2,
+            1);
+        float ladderLength = upRoom.CenterPosition.y - downRoom.CenterPosition.y;
+
+        GameObject ladderGO = Instantiate(ladderPlayerPrefab, ladderPos, Quaternion.identity);
+        ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
+    }
+
     int NeighbourRelativePosition(Room room, Room neighRoom) // returns 0 if horizontal neighbour, 1 if vertical
     {
         Vector3 neighRoomFirstVertice = neighRoom.CenterPosition - new Vector3(neighRoom.Width / 2, neighRoom.Height / 2, 0);
@@ -161,6 +197,31 @@ public class RoomController : MonoBehaviour
 
         Debug.Log(room + " " + neighRoom + " PROBLEM");
         return -1;
+    }
+
+    public void TryToCreateVerticalLadder(Room room, bool up, float posX)
+    {
+        foreach (Tuple<Room, bool> neighRoom in room.NeighbourRooms)
+        {
+            Room nRoom = neighRoom.Item1;
+            if (NeighbourRelativePosition(room, nRoom) == 1) // Vertical
+            {
+                if (room.CenterPosition.y < nRoom.CenterPosition.y && up)
+                {
+                    if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 0.75f >= posX || nRoom.CenterPosition.x - (nRoom.Width / 2) + 0.75f <= posX)
+                    {
+                        CreateVerticalLadder(room, nRoom, posX);
+                    }
+                }
+                else if (room.CenterPosition.y > nRoom.CenterPosition.y && !up)
+                {
+                    if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 0.75f >= posX || nRoom.CenterPosition.x - (nRoom.Width / 2) + 0.75f <= posX)
+                    {
+                        CreateVerticalLadder(nRoom, room, posX);
+                    }
+                }
+            }
+        }
     }
 
     public void LinkToNeighbourRooms(Room room)

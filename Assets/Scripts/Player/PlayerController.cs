@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 
     public CameraController cameraController;
     public CanvasController canvasController;
+    public RoomController roomController;
 
     [SerializeField]
     private List<IdleTrapAbstract> IdleTraps = new List<IdleTrapAbstract>();
@@ -80,6 +81,22 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButtonUp(1))
         {
             cameraController.ZoomOut();
+        }
+
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            if(currentRoom != null)
+            {
+                roomController.TryToCreateVerticalLadder(currentRoom, false, transform.position.x);
+            }
+        }
+        
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            if (currentRoom != null)
+            {
+                roomController.TryToCreateVerticalLadder(currentRoom, true, transform.position.x);
+            }
         }
     }
 

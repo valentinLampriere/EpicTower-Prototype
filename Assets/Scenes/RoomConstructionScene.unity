@@ -198,6 +198,11 @@ PrefabInstance:
       propertyPath: canvasController
       value: 
       objectReference: {fileID: 534044421}
+    - target: {fileID: 3047884096220765109, guid: 636fc6f3bd7cf2a4985d89656c342894,
+        type: 3}
+      propertyPath: roomController
+      value: 
+      objectReference: {fileID: 841961701}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 636fc6f3bd7cf2a4985d89656c342894, type: 3}
 --- !u!1 &311374818
@@ -895,6 +900,7 @@ MonoBehaviour:
     type: 3}
   gatewayPlayerPrefab: {fileID: 987916056032145698, guid: 1daa2dde3de74ff44931cb542229cd7a,
     type: 3}
+  doorPrefab: {fileID: 0}
 --- !u!114 &841961702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,12 +1316,12 @@ PrefabInstance:
     - target: {fileID: 1254415623700041163, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1254415623700041163, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1254415623700041163, guid: e42c2eb04ce420f4c9008a8d7e5a529f,
         type: 3}

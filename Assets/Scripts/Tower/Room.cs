@@ -14,6 +14,8 @@ public class Room : MonoBehaviour
     public Vector3 CenterPosition { get; set; }
     public List<Tuple<Room, bool>> NeighbourRooms { get; set; }
 
+    public Room DoorLink { get; set; }
+
     private GameObject PlacedTrap = null;
 
     public void PlaceTrap(GameObject trap)
@@ -37,11 +39,18 @@ public class Room : MonoBehaviour
         IdleTrapPlaced = false;
     }
 
-    public bool ContainsNeighbourRoomWithStairs(Room _neighRoom)
+    public bool HasHorizontalNeighbourOn(bool left)
     {
         foreach (Tuple<Room, bool> neighTuple in NeighbourRooms)
         {
-            if (neighTuple.Item1.Equals(_neighRoom) && neighTuple.Item2 == true)
+            Vector3 neighRoomFirstVertice = neighTuple.Item1.CenterPosition - new Vector3(neighTuple.Item1.Width / 2, neighTuple.Item1.Height / 2, 0);
+            Vector3 neighRoomLastVertice = neighTuple.Item1.CenterPosition + new Vector3(neighTuple.Item1.Width / 2, neighTuple.Item1.Height / 2, 0);
+
+            if (neighRoomLastVertice.x == CenterPosition.x - (Width / 2) && left)
+            {
+                return true;
+            }
+            else if (neighRoomFirstVertice.x == CenterPosition.x + (Width / 2) && !left)
             {
                 return true;
             }
@@ -50,18 +59,7 @@ public class Room : MonoBehaviour
         return false;
     }
 
-    public bool ContainsNeighbourRoom(Room _neighRoom)
-    {
-        foreach (Tuple<Room, bool> neighTuple in NeighbourRooms)
-        {
-            if (neighTuple.Item1.Equals(_neighRoom))
-            {
-                return true;
-            }
-        }
 
-        return false;
-    }
 
     public int GetTupleIndexOfRoom(Room room)
     {
