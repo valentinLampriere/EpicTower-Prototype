@@ -173,16 +173,31 @@ public class RoomController : MonoBehaviour
         Instantiate(doorPrefab, doorPosition, Quaternion.identity);
     }
 
-    void CreateVerticalLadder(Room downRoom, Room upRoom, float posX)
+    void CreateVerticalPlayerLadder(Room downRoom, Room upRoom, float posX)
     {
         Vector3 ladderPos = new Vector3(
             posX,
             ((downRoom.CenterPosition.y + (downRoom.Height / 2) - 1.5f) + (upRoom.CenterPosition.y + (upRoom.Height / 2) - 1.5f)) / 2,
             1);
-        float ladderLength = upRoom.CenterPosition.y - downRoom.CenterPosition.y;
+        float ladderLength = (upRoom.CenterPosition.y + (upRoom.Height / 2) - 1.5f) - (downRoom.CenterPosition.y + (downRoom.Height / 2) - 1.5f);
 
         GameObject ladderGO = Instantiate(ladderPlayerPrefab, ladderPos, Quaternion.identity);
         ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
+    }
+
+    void CreateVerticalEnemyLadder(Room downRoom, Room upRoom, float posX)
+    {
+        Vector3 ladderPos = new Vector3(
+            posX,
+            ((downRoom.CenterPosition.y - (downRoom.Height / 2) + 0.5f) + (upRoom.CenterPosition.y - (upRoom.Height / 2) + 0.5f)) / 2,
+            -1);
+        float ladderLength = (upRoom.CenterPosition.y - (upRoom.Height / 2) + 0.5f) - (downRoom.CenterPosition.y - (downRoom.Height / 2) + 0.5f);
+
+        GameObject ladderGO = Instantiate(ladderEnemyPrefab, ladderPos, Quaternion.identity);
+        ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
+        NavMeshLink links = ladderGO.GetComponentInChildren<NavMeshLink>();
+        links.startPoint = new Vector3(0, -ladderLength / 2, 0);
+        links.endPoint = new Vector3(0, ladderLength / 2, 0);
     }
 
     int NeighbourRelativePosition(Room room, Room neighRoom) // returns 0 if horizontal neighbour, 1 if vertical
@@ -212,16 +227,18 @@ public class RoomController : MonoBehaviour
             {
                 if (room.CenterPosition.y < nRoom.CenterPosition.y && up)
                 {
-                    if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 0.75f >= posX || nRoom.CenterPosition.x - (nRoom.Width / 2) + 0.75f <= posX)
+                    if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 1f >= posX && nRoom.CenterPosition.x - (nRoom.Width / 2) + 1f <= posX)
                     {
-                        CreateVerticalLadder(room, nRoom, posX);
+                        CreateVerticalPlayerLadder(room, nRoom, posX);
+                        CreateVerticalEnemyLadder(room, nRoom, posX - 0.25f);
                     }
                 }
                 else if (room.CenterPosition.y > nRoom.CenterPosition.y && !up)
                 {
-                    if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 0.75f >= posX || nRoom.CenterPosition.x - (nRoom.Width / 2) + 0.75f <= posX)
+                    if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 1f >= posX && nRoom.CenterPosition.x - (nRoom.Width / 2) + 1f <= posX)
                     {
-                        CreateVerticalLadder(nRoom, room, posX);
+                        CreateVerticalPlayerLadder(nRoom, room, posX);
+                        CreateVerticalEnemyLadder(nRoom, room, posX - 0.25f);
                     }
                 }
             }
