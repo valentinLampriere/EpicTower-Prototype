@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public LayerMask GalleryMask;
+    public LayerMask LadderMask;
     public enum PlayerState {
         Walking,
         Climbing
@@ -28,11 +30,14 @@ public class PlayerController : MonoBehaviour {
 
     private float xMovement;
     private float yMovement;
+    private Vector3 feetPosition;
 
     Rigidbody rb;
+    CapsuleCollider capsCollider;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
+        capsCollider = GetComponent<CapsuleCollider>();
         canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
     }
 
@@ -42,17 +47,20 @@ public class PlayerController : MonoBehaviour {
                 rb.velocity = new Vector3(xMovement * moveSpeed, rb.velocity.y, rb.velocity.z);
                 break;
             case PlayerState.Climbing:
-                rb.velocity = new Vector3(xMovement * moveSpeed, yMovement * climbSpeed, rb.velocity.z);
+                rb.velocity = new Vector3(0, yMovement * climbSpeed, 0);
                 break;
             default:
                 ChangeState(PlayerState.Walking);
                 break;
         }
+
     }
 
     void Update() {
         xMovement = Input.GetAxisRaw("Horizontal");
         yMovement = Input.GetAxisRaw("Vertical");
+        feetPosition = transform.position - new Vector3(0, transform.localScale.y + 0.05f, 0);
+        UpdateState();
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -100,29 +108,53 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void IgnoreWalls(bool ignore)
-    {
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Wall"), ignore);
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Gallery"), ignore);
-    }
-
     public PlayerState ChangeState(PlayerState _state)
     {
 
         if (state == PlayerState.Walking && _state == PlayerState.Climbing)
         {
             rb.useGravity = false;
-            IgnoreWalls(true);
+            capsCollider.isTrigger = true;
             rb.velocity = Vector3.zero;
         }
         else if (state == PlayerState.Climbing && _state == PlayerState.Walking)
         {
             rb.useGravity = true;
-            IgnoreWalls(false);
+            capsCollider.isTrigger = false;
         }
 
         state = _state;
         return state;
+    }
+
+    bool IsOnLadder()
+    {
+        Collider[] ladderColliders = Physics.OverlapSphere(feetPosition, 0.01f, LadderMask);
+
+        return ladderColliders.Length > 0;
+    }
+
+    bool IsGrounded()
+    {
+        Collider[] galleryColliders = Physics.OverlapSphere(feetPosition, 0.01f, GalleryMask);
+
+        return galleryColliders.Length > 0;
+    }
+
+    void UpdateState()
+    {
+        if(IsOnLadder() && yMovement != 0)
+        {
+            ChangeState(PlayerState.Climbing);
+        }
+        if(IsGrounded() && xMovement != 0)
+        {
+            ChangeState(PlayerState.Walking);
+        }
+        if(!IsOnLadder())
+        {
+            ChangeState(PlayerState.Walking);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -133,28 +165,16 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnTriggerStay(Collider other) {
-        if (other.CompareTag("PlayerLadder") || other.CompareTag("PlayerGateway")) {
-
-            if (state == PlayerState.Walking)
-            {
-                ChangeState(PlayerState.Climbing);
-            }
-        }
-    }
-
     private void OnTriggerExit(Collider other) {
         
         if (other.CompareTag("Room"))
         {
             currentRoom = null;
         }
-        else if (other.CompareTag("PlayerGateway") || other.CompareTag("PlayerLadder"))
-        {
-            if(state == PlayerState.Climbing)
-            {
-                ChangeState(PlayerState.Walking);
-            }
-        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(feetPosition, 0.01f);
     }
 }
