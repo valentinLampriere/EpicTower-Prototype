@@ -12,45 +12,6 @@ public class RoomController : MonoBehaviour
     [SerializeField] private GameObject gatewayPlayerPrefab = null;
     [SerializeField] private GameObject doorPrefab = null;
 
-    //void CreateLadder(Room room, Room neighRoom)
-    //{
-    //    Vector3 minRoomAnchor;
-    //    Vector3 maxRoomAnchor;
-    //    Vector3 minNeighRoomAnchor;
-    //    Vector3 maxNeighRoomAnchor;
-    //    float yPos;
-    //    float dist;
-
-    //    if (room.CenterPosition.y > neighRoom.CenterPosition.y)
-    //    {
-    //        minRoomAnchor = new Vector3(room.CenterPosition.x - room.Width / 2, room.CenterPosition.y - room.Height / 2);
-    //        maxRoomAnchor = new Vector3(room.CenterPosition.x + room.Width / 2, room.CenterPosition.y - room.Height / 2);
-    //        minNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x - neighRoom.Width / 2, neighRoom.CenterPosition.y + neighRoom.Height / 2);
-    //        maxNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x + neighRoom.Width / 2, neighRoom.CenterPosition.y + neighRoom.Height / 2);
-    //        yPos = neighRoom.CenterPosition.y + 0.5f;
-    //        dist = neighRoom.Height;
-    //    }
-    //    else
-    //    {
-    //        minRoomAnchor = new Vector3(room.CenterPosition.x - room.Width / 2, room.CenterPosition.y + room.Height / 2);
-    //        maxRoomAnchor = new Vector3(room.CenterPosition.x + room.Width / 2, room.CenterPosition.y + room.Height / 2);
-    //        minNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x - neighRoom.Width / 2, neighRoom.CenterPosition.y - neighRoom.Height / 2);
-    //        maxNeighRoomAnchor = new Vector3(neighRoom.CenterPosition.x + neighRoom.Width / 2, neighRoom.CenterPosition.y - neighRoom.Height / 2);
-    //        yPos = room.CenterPosition.y + 0.5f;
-    //        dist = room.Height;
-    //    }
-
-    //    Vector3 ladderPos = new Vector3(
-    //        (Mathf.Max(minRoomAnchor.x, minNeighRoomAnchor.x) + Mathf.Min(maxRoomAnchor.x, maxNeighRoomAnchor.x)) / 2,
-    //        yPos);
-
-    //    GameObject ladderGO = Instantiate(ladderPrefab, ladderPos, Quaternion.identity);
-    //    ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, dist, ladderGO.transform.localScale.z);
-    //    NavMeshLink links = ladderGO.GetComponentInChildren<NavMeshLink>();
-    //    links.startPoint = new Vector3(0, -dist / 2, 0);
-    //    links.endPoint = new Vector3(0, dist / 2, 0);
-    //}
-
     void CreateHorizontalGateway(Room downRoom, Room upRoom)
     {
         float gatewayLeftX;
@@ -68,10 +29,11 @@ public class RoomController : MonoBehaviour
         }
 
         float gatewayAnchorY = upRoom.CenterPosition.y - upRoom.Height / 2 + 0.5f;
-        Vector3 leftAnchor = new Vector3(gatewayLeftX, gatewayAnchorY, -1);
-        Vector3 rightAnchor = new Vector3(gatewayRightX, gatewayAnchorY, -1);
+        Vector3 leftAnchor = new Vector3(gatewayLeftX, gatewayAnchorY, 1);
+        Vector3 rightAnchor = new Vector3(gatewayRightX, gatewayAnchorY, 1);
 
         Vector3 gatewayPos = (leftAnchor + rightAnchor) / 2;
+        gatewayPos -= new Vector3(0, 0.1f, 0);
         float gatewayLength = rightAnchor.x - leftAnchor.x;
 
         GameObject gatewayGO = Instantiate(gatewayEnemyPrefab);
@@ -84,8 +46,8 @@ public class RoomController : MonoBehaviour
         float ladderAnchorX = downRoom.CenterPosition.x < upRoom.CenterPosition.x ?
             downRoom.CenterPosition.x + (downRoom.Width / 2) - 0.75f : downRoom.CenterPosition.x - (downRoom.Width / 2) + 0.75f;
 
-        Vector3 downAnchor = new Vector3(ladderAnchorX, downRoom.CenterPosition.y - downRoom.Height / 2 + 0.5f, -1);
-        Vector3 upAnchor = new Vector3(ladderAnchorX, upRoom.CenterPosition.y - upRoom.Height / 2 + 0.5f, -1);
+        Vector3 downAnchor = new Vector3(ladderAnchorX, downRoom.CenterPosition.y - downRoom.Height / 2 + 0.5f, 1);
+        Vector3 upAnchor = new Vector3(ladderAnchorX, upRoom.CenterPosition.y - upRoom.Height / 2 + 0.5f, 1);
 
         Vector3 ladderPos = (downAnchor + upAnchor) / 2;
         float ladderLength = upAnchor.y - downAnchor.y;
@@ -94,7 +56,8 @@ public class RoomController : MonoBehaviour
         ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
         NavMeshLink links = ladderGO.GetComponentInChildren<NavMeshLink>();
         links.startPoint = new Vector3(0, -ladderLength / 2, 0);
-        links.endPoint = new Vector3(0, ladderLength / 2 + 0.1f, 0);
+        links.endPoint = new Vector3(0, ladderLength / 2, 0);
+        links.UpdateLink();
     }
 
     void CreateHorizontalGalleryGateway(Room downRoom, Room upRoom)
@@ -114,10 +77,11 @@ public class RoomController : MonoBehaviour
         }
 
         float gatewayAnchorY = downRoom.CenterPosition.y + upRoom.Height / 2 - 1.5f;
-        Vector3 leftAnchor = new Vector3(gatewayLeftX, gatewayAnchorY, 1);
-        Vector3 rightAnchor = new Vector3(gatewayRightX, gatewayAnchorY, 1);
+        Vector3 leftAnchor = new Vector3(gatewayLeftX, gatewayAnchorY, -1);
+        Vector3 rightAnchor = new Vector3(gatewayRightX, gatewayAnchorY, -1);
 
         Vector3 gatewayPos = (leftAnchor + rightAnchor) / 2;
+        gatewayPos -= new Vector3(0, 0.05f, 0);
         float gatewayLength = rightAnchor.x - leftAnchor.x;
 
         GameObject gatewayGO = Instantiate(gatewayPlayerPrefab);
@@ -130,11 +94,12 @@ public class RoomController : MonoBehaviour
         float ladderAnchorX = downRoom.CenterPosition.x < upRoom.CenterPosition.x ?
             upRoom.CenterPosition.x - upRoom.Width / 2 + 0.75f : upRoom.CenterPosition.x + upRoom.Width / 2 - 0.75f;
 
-        Vector3 downAnchor = new Vector3(ladderAnchorX, downRoom.CenterPosition.y + downRoom.Height / 2 - 1.5f, 1);
-        Vector3 upAnchor = new Vector3(ladderAnchorX, upRoom.CenterPosition.y + upRoom.Height / 2 - 1.5f, 1);
+        Vector3 downAnchor = new Vector3(ladderAnchorX, downRoom.CenterPosition.y + (downRoom.Height / 2) - 1.5f, -1);
+        Vector3 upAnchor = new Vector3(ladderAnchorX, upRoom.CenterPosition.y + upRoom.Height / 2 - 1.5f, -1);
 
         Vector3 ladderPos = (downAnchor + upAnchor) / 2;
-        float ladderLength = upAnchor.y - downAnchor.y;
+        ladderPos += new Vector3(0, 0.05f, 0);
+        float ladderLength = (upAnchor.y - downAnchor.y);
 
 
         GameObject ladderGO = Instantiate(ladderPlayerPrefab, ladderPos, Quaternion.identity);
@@ -178,7 +143,8 @@ public class RoomController : MonoBehaviour
         Vector3 ladderPos = new Vector3(
             posX,
             ((downRoom.CenterPosition.y + (downRoom.Height / 2) - 1.5f) + (upRoom.CenterPosition.y + (upRoom.Height / 2) - 1.5f)) / 2,
-            1);
+            -1);
+        ladderPos += new Vector3(0, 0.05f, 0);
         float ladderLength = (upRoom.CenterPosition.y + (upRoom.Height / 2) - 1.5f) - (downRoom.CenterPosition.y + (downRoom.Height / 2) - 1.5f);
 
         GameObject ladderGO = Instantiate(ladderPlayerPrefab, ladderPos, Quaternion.identity);
@@ -190,7 +156,7 @@ public class RoomController : MonoBehaviour
         Vector3 ladderPos = new Vector3(
             posX,
             ((downRoom.CenterPosition.y - (downRoom.Height / 2) + 0.5f) + (upRoom.CenterPosition.y - (upRoom.Height / 2) + 0.5f)) / 2,
-            -1);
+            1);
         float ladderLength = (upRoom.CenterPosition.y - (upRoom.Height / 2) + 0.5f) - (downRoom.CenterPosition.y - (downRoom.Height / 2) + 0.5f);
 
         GameObject ladderGO = Instantiate(ladderEnemyPrefab, ladderPos, Quaternion.identity);
@@ -198,6 +164,7 @@ public class RoomController : MonoBehaviour
         NavMeshLink links = ladderGO.GetComponentInChildren<NavMeshLink>();
         links.startPoint = new Vector3(0, -ladderLength / 2, 0);
         links.endPoint = new Vector3(0, ladderLength / 2, 0);
+        links.UpdateLink();
     }
 
     int NeighbourRelativePosition(Room room, Room neighRoom) // returns 0 if horizontal neighbour, 1 if vertical
@@ -230,7 +197,7 @@ public class RoomController : MonoBehaviour
                     if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 1f >= posX && nRoom.CenterPosition.x - (nRoom.Width / 2) + 1f <= posX)
                     {
                         CreateVerticalPlayerLadder(room, nRoom, posX);
-                        CreateVerticalEnemyLadder(room, nRoom, posX - 0.25f);
+                        CreateVerticalEnemyLadder(room, nRoom, posX - 0.35f);
                     }
                 }
                 else if (room.CenterPosition.y > nRoom.CenterPosition.y && !up)
@@ -238,7 +205,7 @@ public class RoomController : MonoBehaviour
                     if (nRoom.CenterPosition.x + (nRoom.Width / 2) - 1f >= posX && nRoom.CenterPosition.x - (nRoom.Width / 2) + 1f <= posX)
                     {
                         CreateVerticalPlayerLadder(nRoom, room, posX);
-                        CreateVerticalEnemyLadder(nRoom, room, posX - 0.25f);
+                        CreateVerticalEnemyLadder(nRoom, room, posX - 0.35f);
                     }
                 }
             }

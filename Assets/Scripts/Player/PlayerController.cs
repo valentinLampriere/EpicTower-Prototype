@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour {
     void Update() {
         xMovement = Input.GetAxisRaw("Horizontal");
         yMovement = Input.GetAxisRaw("Vertical");
-        feetPosition = transform.position - new Vector3(0, transform.localScale.y + 0.05f, 0);
+        feetPosition = transform.position - new Vector3(0, transform.localScale.y + 0.01f, 0);
         UpdateState();
 
         if (Input.GetKeyDown(KeyCode.A))

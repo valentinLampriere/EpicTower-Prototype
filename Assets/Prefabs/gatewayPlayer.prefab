@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 987916056032145699}
   - component: {fileID: 987916056032145702}
   - component: {fileID: 987916056032145697}
-  - component: {fileID: 4925044176236096789}
+  - component: {fileID: 5433340177603033002}
   m_Layer: 14
   m_Name: gatewayPlayer
   m_TagString: PlayerGateway
@@ -80,8 +80,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4925044176236096789
-MeshCollider:
+--- !u!65 &5433340177603033002
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +90,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 2.3698108, y: 1.0000002, z: 1}
+  m_Center: {x: -0.6849046, y: -4.2564888e-17, z: 0}
