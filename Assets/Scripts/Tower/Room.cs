@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ public class Room : MonoBehaviour
         }
 
         Vector3 TrapPosition = transform.position;
-        
+
         IdleTrapPlaced = true;
         TrapPosition.y -= Height / 2f - BottomBlock.localScale.y - trap.transform.localScale.y / 2f;
         TrapPosition.z += Thickness / 4;
@@ -59,13 +58,11 @@ public class Room : MonoBehaviour
         return false;
     }
 
-
-
     public int GetTupleIndexOfRoom(Room room)
     {
-        for(int i = 0; i < NeighbourRooms.Count; i++)
+        for (int i = 0; i < NeighbourRooms.Count; i++)
         {
-            if(NeighbourRooms[i].Item1.Equals(room))
+            if (NeighbourRooms[i].Item1.Equals(room))
             {
                 return i;
             }

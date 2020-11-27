@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class TowerConstructManager : MonoBehaviour
@@ -19,7 +17,7 @@ public class TowerConstructManager : MonoBehaviour
     private bool activePreview;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         mainCamera = Camera.main;
         grid = GetComponent<Grid>();
@@ -29,7 +27,7 @@ public class TowerConstructManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -55,12 +53,13 @@ public class TowerConstructManager : MonoBehaviour
             roomPreviewGO.transform.position = grid.SnapToGrid(GetMousePositionInWorld());
         }
     }
+
     private Vector3 GetMousePositionInWorld()
     {
         return mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
     }
 
-    void InitTowerRooms()
+    private void InitTowerRooms()
     {
         Room[] towerRooms = towerPrefab.GetComponentsInChildren<Room>();
 

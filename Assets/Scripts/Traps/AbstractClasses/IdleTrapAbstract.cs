@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class IdleTrapAbstract : MonoBehaviour
 {
@@ -11,6 +9,7 @@ public abstract class IdleTrapAbstract : MonoBehaviour
             ActionOnEnter(other.GetComponent<Enemy>());
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Enemy"))
@@ -28,8 +27,8 @@ public abstract class IdleTrapAbstract : MonoBehaviour
     }
 
     protected abstract void ActionOnEnter(Enemy enemy);
-    
+
     protected abstract void ActionOnStay(Enemy enemy);
-    
+
     protected abstract void ActionOnExit(Enemy enemy);
 }

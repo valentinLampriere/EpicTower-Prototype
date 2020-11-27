@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemiesManager : MonoBehaviour
@@ -10,7 +9,8 @@ public class EnemiesManager : MonoBehaviour
     [SerializeField] private Transform Destination = null;
 
     // Called on the "Run" button
-    public void ThrowNextWave() {
+    public void ThrowNextWave()
+    {
         waves[0].Init(transform.position, Destination.position);
 
         waves.RemoveAt(0);

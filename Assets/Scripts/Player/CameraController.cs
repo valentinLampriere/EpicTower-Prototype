@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
     private float ZoomRange = 0f;
+
     private Vector3 previousPosition;
     private bool zoomedIn = false;
 
