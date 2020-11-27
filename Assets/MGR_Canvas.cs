@@ -8,7 +8,7 @@ public class MGR_Canvas : MonoBehaviour
 
 
     public Slider sliderHP;
-    public Text textHP;
+    public Text textGold;
 
 
     // Awake is called before Start
@@ -24,8 +24,8 @@ public class MGR_Canvas : MonoBehaviour
     private void Start()
     {
         sliderHP.maxValue = MGR_Game.Instance.fMaxHP;
-        sliderHP.value = MGR_Game.Instance.fHP;
-        sliderHP.GetComponentInChildren<Text>().text = sliderHP.value.ToString() + " / " + sliderHP.maxValue.ToString();
+        UpdateHPUI();
+        UpdateGoldUI();
     }
 
 
@@ -34,6 +34,11 @@ public class MGR_Canvas : MonoBehaviour
         sliderHP.value = MGR_Game.Instance.fHP;
     
         sliderHP.GetComponentInChildren<Text>().text = sliderHP.value.ToString() + " / " + sliderHP.maxValue.ToString();
+    }
+
+    public void UpdateGoldUI()
+    {
+        textGold.text = MGR_Game.Instance.fGolds.ToString() + " Gold";
     }
 
 

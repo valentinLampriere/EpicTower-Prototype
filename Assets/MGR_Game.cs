@@ -7,7 +7,7 @@ public class MGR_Game : MonoBehaviour
 
     public float fMaxHP;
     public float fHP;
-    public float fCoins;
+    public float fGolds;
 
     // Awake is called before Start
     private void Awake()
@@ -36,5 +36,25 @@ public class MGR_Game : MonoBehaviour
         fHP += dmg;
         fHP = Mathf.Clamp(fHP, 0, fMaxHP);
         MGR_Canvas.Instance.UpdateHPUI();
+    }
+
+    public void BuyButton(float cost)
+    {
+        Buy(cost);
+    }
+
+    public bool Buy(float cost)
+    {
+        if (fGolds - cost > 0)
+        {
+            fGolds -= cost;
+            MGR_Canvas.Instance.UpdateGoldUI();
+            return true;
+        }
+        else
+        {
+            Debug.Log("Pas assez de thunes");
+            return false;
+        }
     }
 }
