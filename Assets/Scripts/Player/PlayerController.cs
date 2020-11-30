@@ -87,15 +87,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1))
-        {
-            cameraController.ZoomIn(transform.position);
-        }
-
-        if (Input.GetMouseButtonUp(1))
-        {
-            cameraController.ZoomOut();
-        }
+        cameraController.trPlayer = transform;
 
         if (Input.GetKeyDown(KeyCode.L))
         {
