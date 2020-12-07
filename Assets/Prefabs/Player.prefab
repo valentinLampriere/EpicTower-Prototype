@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2428573621373337547}
-  - component: {fileID: 2428573621373337544}
+  - component: {fileID: 2209958928219882424}
   - component: {fileID: 2428573621373337545}
-  - component: {fileID: 4064026693927604268}
   - component: {fileID: 1650087175}
-  - component: {fileID: 1650087177}
-  m_Layer: 0
+  - component: {fileID: 3047884096220765109}
+  - component: {fileID: 1427391375}
+  m_Layer: 13
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,19 +30,19 @@ Transform:
   m_GameObject: {fileID: 2428573621373337543}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2428573621373337544
+--- !u!33 &2209958928219882424
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2428573621373337543}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 2540817853737639666, guid: 410b23fb13ae31e4a9d413e1376e1a37, type: 3}
 --- !u!23 &2428573621373337545
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -61,7 +61,12 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 364948d78b27faa41baf5ad7094a029a, type: 2}
+  - {fileID: 8748892135801146194, guid: 410b23fb13ae31e4a9d413e1376e1a37, type: 3}
+  - {fileID: -4597107667637640440, guid: 410b23fb13ae31e4a9d413e1376e1a37, type: 3}
+  - {fileID: 5561349426305759274, guid: 410b23fb13ae31e4a9d413e1376e1a37, type: 3}
+  - {fileID: 8368722655750445499, guid: 410b23fb13ae31e4a9d413e1376e1a37, type: 3}
+  - {fileID: -4612162990109294230, guid: 410b23fb13ae31e4a9d413e1376e1a37, type: 3}
+  - {fileID: 6034957751646507721, guid: 410b23fb13ae31e4a9d413e1376e1a37, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,25 +87,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &4064026693927604268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2428573621373337543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a19b1c69d3d6ca4eb3f6fd89e8a3b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraController: {fileID: 0}
-  FireTrap: {fileID: 8769374736793496398, guid: b394b61bf7ece3c408e1bd9cb799ea69,
-    type: 3}
-  SlowTrap: {fileID: 1448642627395234769, guid: 28ae600fdf187884caac085d2e690772,
-    type: 3}
-  speed: 0.5
-  currentRoom: {fileID: 0}
 --- !u!54 &1650087175
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -117,8 +103,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!136 &1650087177
-CapsuleCollider:
+--- !u!114 &3047884096220765109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428573621373337543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcb42d68595ef9c40bab40339896311c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GalleryMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  LadderMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  cameraController: {fileID: 0}
+  canvasController: {fileID: 0}
+  roomController: {fileID: 0}
+  IdleTraps:
+  - {fileID: 4720499047607412898, guid: 809bc882d53156d43b4881cb7614052e, type: 3}
+  - {fileID: 7888818918000252133, guid: b394b61bf7ece3c408e1bd9cb799ea69, type: 3}
+  - {fileID: 142224856, guid: 28ae600fdf187884caac085d2e690772, type: 3}
+  currentRoom: {fileID: 0}
+  moveSpeed: 5
+  climbSpeed: 5
+--- !u!135 &1427391375
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -127,7 +141,6 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.012718795
+  m_Center: {x: 0.00046195136, y: 0.012074869, z: 0}

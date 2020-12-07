@@ -13,6 +13,6 @@ public class EnemiesManager : MonoBehaviour
     public void ThrowNextWave() {
         waves[0].Init(transform.position, Destination.position);
 
-        waves.RemoveAt(0);
+        //waves.RemoveAt(0);
     }
 }

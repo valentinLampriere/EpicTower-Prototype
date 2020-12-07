@@ -7,6 +7,11 @@ TagManager:
   - Enemy
   - Ladder
   - Room
+  - Stairs
+  - Ceil
+  - Gallery
+  - PlayerLadder
+  - PlayerGateway
   layers:
   - Default
   - TransparentFX
@@ -18,11 +23,11 @@ TagManager:
   - 
   - Floors
   - Room
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ladder
+  - Wall
+  - Stairs
+  - Player
+  - Gallery
   - 
   - 
   - 

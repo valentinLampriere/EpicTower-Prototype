@@ -1,67 +1,69 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-    
+
+    public LayerMask GalleryMask;
+    public LayerMask LadderMask;
+    public enum PlayerState {
+        Walking,
+        Climbing
+    }
+
+    PlayerState state = PlayerState.Walking;
+
     public CameraController cameraController;
     public CanvasController canvasController;
+    public RoomController roomController;
 
     [SerializeField]
     private List<IdleTrapAbstract> IdleTraps = new List<IdleTrapAbstract>();
     private int currentTrap = 0;
 
     [SerializeField]
-    private float speed = 0f;
-
-    [SerializeField]
     private Room currentRoom = null;
 
-    public enum PlayerState {
-        Moving,
-        Climbing
-    }
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float climbSpeed = 1.5f;
 
-    PlayerState state = PlayerState.Moving;
+    private float xMovement;
+    private float yMovement;
+    private Vector3 feetPosition;
 
-    private Rigidbody rb;
-    private GameObject ladder;
+    Rigidbody rb;
+    SphereCollider sphereCollider;
 
-    private void Start()
-    {
+    void Start() {
         rb = GetComponent<Rigidbody>();
+        sphereCollider = GetComponent<SphereCollider>();
         canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
     }
 
-    public PlayerState ChangeState(PlayerState _state) {
-
-        if(state == PlayerState.Moving && _state == PlayerState.Climbing) {
-            
-        }
-
-        state = _state;
-        return state;
-    }
-
     private void FixedUpdate() {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-
         switch (state) {
-            case PlayerState.Moving:
-                rb.velocity += Vector3.right * x * speed;
+            case PlayerState.Walking:
+                rb.velocity = new Vector3(xMovement * moveSpeed, rb.velocity.y, rb.velocity.z);
                 break;
             case PlayerState.Climbing:
-                rb.velocity += Vector3.up * y * speed;
+                rb.velocity = new Vector3(0, yMovement * climbSpeed, 0);
                 break;
             default:
+                ChangeState(PlayerState.Walking);
                 break;
         }
+
     }
 
-    private void Update() 
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
+    void Update() {
+        xMovement = Input.GetAxisRaw("Horizontal");
+        yMovement = Input.GetAxisRaw("Vertical");
+        feetPosition = transform.position - new Vector3(0, transform.localScale.y * 1.25f, 0);
+        UpdateState();
+        RotateMesh();
+
+        if (Input.GetKeyDown(KeyCode.A))
         {
             currentTrap += 1;
             if (currentTrap > IdleTraps.Count - 1)
@@ -90,42 +92,103 @@ public class PlayerController : MonoBehaviour {
             cameraController.ZoomOut();
         }
 
-        if (ladder != null && Input.GetAxis("Vertical") != 0) {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            if(currentRoom != null)
+            {
+                roomController.TryToCreateVerticalLadder(currentRoom, false, transform.position.x);
+            }
+        }
+        
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            if (currentRoom != null)
+            {
+                roomController.TryToCreateVerticalLadder(currentRoom, true, transform.position.x);
+            }
+        }
+    }
+
+    public PlayerState ChangeState(PlayerState _state)
+    {
+
+        if (state == PlayerState.Walking && _state == PlayerState.Climbing)
+        {
+            rb.useGravity = false;
+            sphereCollider.isTrigger = true;
+            rb.velocity = Vector3.zero;
+        }
+        else if (state == PlayerState.Climbing && _state == PlayerState.Walking)
+        {
+            rb.useGravity = true;
+            sphereCollider.isTrigger = false;
+        }
+
+        state = _state;
+        return state;
+    }
+
+    bool IsOnLadder()
+    {
+        Collider[] ladderColliders = Physics.OverlapSphere(feetPosition, 0.01f, LadderMask);
+
+        return ladderColliders.Length > 0;
+    }
+
+    bool IsGrounded()
+    {
+        Collider[] galleryColliders = Physics.OverlapSphere(feetPosition, 0.01f, GalleryMask);
+
+        return galleryColliders.Length > 0;
+    }
+
+    void UpdateState()
+    {
+        if(IsOnLadder() && yMovement != 0)
+        {
             ChangeState(PlayerState.Climbing);
         }
+        if(IsGrounded() && xMovement != 0)
+        {
+            ChangeState(PlayerState.Walking);
+        }
+        if(!IsOnLadder())
+        {
+            ChangeState(PlayerState.Walking);
+        }
+    }
+
+    void RotateMesh()
+    {
+        float xVel = rb.velocity.x;
+        if(Mathf.Abs(xVel) < 1f)
+        {
+            return;
+        }
+
+        float y = xVel > 0 ? 180f : 0f;
+
+        transform.rotation = Quaternion.Euler(0, y, 0);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ladder"))
-        {
-            ladder = other.gameObject;
-        }
-        else if (other.CompareTag("Room"))
+        if (other.CompareTag("Room"))
         {
             currentRoom = other.GetComponent<Room>();
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Ladder"))
-        {
-            ladder = null;
-        }
-        else if(other.CompareTag("Room"))
+        
+        if (other.CompareTag("Room"))
         {
             currentRoom = null;
         }
     }
 
-    /*private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "Ladder") {
-            if (Input.GetKeyDown(KeyCode.S) && (other.gameObject.transform.position.y - transform.position.y) < 0) {
-                ChangeState(PlayerState.Climbing);
-            }
-            if (Input.GetKeyDown(KeyCode.Z) && (other.gameObject.transform.position.y - transform.position.y) > 0) {
-                ChangeState(PlayerState.Climbing);
-            }
-        }
-    }*/
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(feetPosition, 0.01f);
+    }
 }
