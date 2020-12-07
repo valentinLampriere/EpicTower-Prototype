@@ -33,11 +33,11 @@ public class PlayerController : MonoBehaviour {
     private Vector3 feetPosition;
 
     Rigidbody rb;
-    CapsuleCollider capsCollider;
+    SphereCollider sphereCollider;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
-        capsCollider = GetComponent<CapsuleCollider>();
+        sphereCollider = GetComponent<SphereCollider>();
         canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
     }
 
@@ -59,8 +59,9 @@ public class PlayerController : MonoBehaviour {
     void Update() {
         xMovement = Input.GetAxisRaw("Horizontal");
         yMovement = Input.GetAxisRaw("Vertical");
-        feetPosition = transform.position - new Vector3(0, transform.localScale.y + 0.01f, 0);
+        feetPosition = transform.position - new Vector3(0, transform.localScale.y * 1.25f, 0);
         UpdateState();
+        RotateMesh();
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -114,13 +115,13 @@ public class PlayerController : MonoBehaviour {
         if (state == PlayerState.Walking && _state == PlayerState.Climbing)
         {
             rb.useGravity = false;
-            capsCollider.isTrigger = true;
+            sphereCollider.isTrigger = true;
             rb.velocity = Vector3.zero;
         }
         else if (state == PlayerState.Climbing && _state == PlayerState.Walking)
         {
             rb.useGravity = true;
-            capsCollider.isTrigger = false;
+            sphereCollider.isTrigger = false;
         }
 
         state = _state;
@@ -155,6 +156,19 @@ public class PlayerController : MonoBehaviour {
         {
             ChangeState(PlayerState.Walking);
         }
+    }
+
+    void RotateMesh()
+    {
+        float xVel = rb.velocity.x;
+        if(Mathf.Abs(xVel) < 1f)
+        {
+            return;
+        }
+
+        float y = xVel > 0 ? 180f : 0f;
+
+        transform.rotation = Quaternion.Euler(0, y, 0);
     }
 
     private void OnTriggerEnter(Collider other)
