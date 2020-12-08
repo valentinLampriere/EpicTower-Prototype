@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wave : MonoBehaviour{
+public class Wave : MonoBehaviour
+{
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
     [SerializeField] private float intervalBetweenEnemies = 0.5f;
 
@@ -10,7 +11,8 @@ public class Wave : MonoBehaviour{
     private Vector3 destination;
     private List<Enemy> enemiesToSpawn;
 
-    public void Init(Vector3 src, Vector3 dest) {
+    public void Init(Vector3 src, Vector3 dest)
+    {
         source = src;
         destination = dest;
         enemiesToSpawn = new List<Enemy>(enemies);

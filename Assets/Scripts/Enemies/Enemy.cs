@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Enemy : MonoBehaviour {
+public abstract class Enemy : MonoBehaviour
+{
     public Vector3 Destination { get; set; }
 
     public NavMeshAgent Agent { get; set; }
 
     [SerializeField]
     private float Health = 200f;
+
     private float oldSpeed = 0f;
 
     protected virtual void Awake()
@@ -25,7 +24,8 @@ public abstract class Enemy : MonoBehaviour {
 
     protected virtual void Update()
     {
-        if (HasReachedEnd() || Health <= 0) {
+        if (HasReachedEnd() || Health <= 0)
+        {
             Destroy(gameObject);
         }
     }
@@ -45,7 +45,8 @@ public abstract class Enemy : MonoBehaviour {
         return false;
     }
 
-    public void Init(float speed) {
+    public void Init(float speed)
+    {
         Agent.speed = speed;
         Agent.SetDestination(Destination);
     }
