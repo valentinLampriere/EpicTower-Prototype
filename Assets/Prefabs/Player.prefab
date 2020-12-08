@@ -124,12 +124,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb42d68595ef9c40bab40339896311c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GalleryMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  LadderMask:
+    serializedVersion: 2
+    m_Bits: 1024
   cameraController: {fileID: 0}
   canvasController: {fileID: 0}
+  roomController: {fileID: 0}
   IdleTraps:
   - {fileID: 4720499047607412898, guid: 809bc882d53156d43b4881cb7614052e, type: 3}
   - {fileID: 7888818918000252133, guid: b394b61bf7ece3c408e1bd9cb799ea69, type: 3}
   - {fileID: 142224856, guid: 28ae600fdf187884caac085d2e690772, type: 3}
   currentRoom: {fileID: 0}
   moveSpeed: 5
-  climbSpeed: 3
+  climbSpeed: 5
