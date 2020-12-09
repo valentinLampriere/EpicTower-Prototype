@@ -3,25 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TurretTrap : ActiveTrapAbstract
-{
-    [Range(0f, 100f)]
-    public float Damage = 10f;
-    [Range(0f, 100f)]
-    public float CustomCooldown = 10f;
-    [Range(0f, 100f)]
-    public float TimeActive = 5f;
-    
-    public Room BaseRoom;
+{    
     public Turret TurretObject;
-    public TriggerButton Trigger;
-
-    [SerializeField]
-    private float TimeUntilActive = 0f;
 
     public override void ActivateTrap()
     {
         TimeUntilActive = CustomCooldown;
-
         TurretObject.ActivateFor(TimeActive);
     }
 
@@ -35,6 +22,12 @@ public class TurretTrap : ActiveTrapAbstract
         return false;
     }
 
+    protected override void Update()
+    {
+        base.Update();
+        CheckCooldown();
+    }
+    
     private void CheckCooldown()
     {
         if (TimeUntilActive > 0f)
@@ -60,18 +53,11 @@ public class TurretTrap : ActiveTrapAbstract
 
     private void SetUpTurret()
     {
-        TurretObject.Damage = Damage;
-        TurretObject.TimeActive = TimeActive;
+        TurretObject.ChangeDamage(Effect);
     }
 
     private void Start()
     {
         SetUpTurret();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-        CheckCooldown();
     }
 }

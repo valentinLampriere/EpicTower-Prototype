@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    public Transform TurretCanon; //just doing it for esthetic purposes, delete later
-
-    public float TimeActive = 0f;
-    public float Damage = 0f;
-    public LineRenderer ProjectileRenderer;
+    public Transform TurretCanon; //just doing it for the esthetic purposes
+    public LineRenderer ProjectileRenderer; //feel free to delete these later
 
     [SerializeField]
     private List<Enemy> Targets;
     [SerializeField]
     private Enemy CurrentTarget;
+    
+    private float TimeActive = 0f;
+    private float Damage = 0f;
 
     public void ActivateFor(float time)
     {
@@ -32,10 +32,7 @@ public class Turret : MonoBehaviour
             Targets.Remove(Target);
             if(CurrentTarget == Target)
             {
-                if(!TryGetTarget())
-                {
-                    CurrentTarget = null;
-                }
+                TryGetTarget();
             }
         }
     }
@@ -45,9 +42,14 @@ public class Turret : MonoBehaviour
         return Targets.Count;
     }
 
+    public void ChangeDamage(float newDamage)
+    {
+        Damage = newDamage;
+    }
+
     private void Shoot()
     {
-        Debug.Log("Message: Attacking");
+        //Debug.Log("Message: Attacking");
 
         CurrentTarget.TakeDamage(Damage * Time.deltaTime);
         TurretCanon.LookAt(CurrentTarget.transform);
@@ -68,8 +70,7 @@ public class Turret : MonoBehaviour
                     DeleteTarget(CurrentTarget);
                     if (!TryGetTarget())
                     {
-                        ProjectileRenderer.enabled = false;
-                        return;
+                        ResetRotation();
                     }
                 }
 
@@ -78,15 +79,21 @@ public class Turret : MonoBehaviour
             else
             {
                 TryGetTarget();
+                ResetRotation();
             }
         }
         else
         {
-            if (TurretCanon.rotation != Quaternion.identity)
-            {
-                TurretCanon.rotation = Quaternion.identity;
-                ProjectileRenderer.enabled = false;
-            }
+            ResetRotation();
+        }
+    }
+
+    private void ResetRotation()
+    {
+        if (TurretCanon.rotation != Quaternion.identity)
+        {
+            TurretCanon.rotation = Quaternion.identity;
+            ProjectileRenderer.enabled = false;
         }
     }
 
@@ -99,13 +106,16 @@ public class Turret : MonoBehaviour
             return true;
         }
 
+        CurrentTarget = null;
+
         return false;
     }
 
     private void Start()
     {
+        Targets = new List<Enemy>();
+
         ProjectileRenderer.SetPosition(0, TurretCanon.position);
         ProjectileRenderer.enabled = false;
-        Targets = new List<Enemy>();
     }
 }

@@ -35,14 +35,36 @@ public class PlayerController : MonoBehaviour {
     Rigidbody rb;
     SphereCollider sphereCollider;
 
-    void Start() {
+    public PlayerState ChangeState(PlayerState _state)
+    {
+
+        if (state == PlayerState.Walking && _state == PlayerState.Climbing)
+        {
+            rb.useGravity = false;
+            sphereCollider.isTrigger = true;
+            rb.velocity = Vector3.zero;
+        }
+        else if (state == PlayerState.Climbing && _state == PlayerState.Walking)
+        {
+            rb.useGravity = true;
+            sphereCollider.isTrigger = false;
+        }
+
+        state = _state;
+        return state;
+    }
+
+    private void Start()
+    {
         rb = GetComponent<Rigidbody>();
         sphereCollider = GetComponent<SphereCollider>();
         canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
     }
 
-    private void FixedUpdate() {
-        switch (state) {
+    private void FixedUpdate()
+    {
+        switch (state)
+        {
             case PlayerState.Walking:
                 rb.velocity = new Vector3(xMovement * moveSpeed, rb.velocity.y, rb.velocity.z);
                 break;
@@ -53,10 +75,10 @@ public class PlayerController : MonoBehaviour {
                 ChangeState(PlayerState.Walking);
                 break;
         }
-
     }
 
-    void Update() {
+    private void Update()
+    {
         xMovement = Input.GetAxisRaw("Horizontal");
         yMovement = Input.GetAxisRaw("Vertical");
         feetPosition = transform.position - new Vector3(0, transform.localScale.y * 1.25f, 0);
@@ -109,40 +131,21 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public PlayerState ChangeState(PlayerState _state)
-    {
-
-        if (state == PlayerState.Walking && _state == PlayerState.Climbing)
-        {
-            rb.useGravity = false;
-            sphereCollider.isTrigger = true;
-            rb.velocity = Vector3.zero;
-        }
-        else if (state == PlayerState.Climbing && _state == PlayerState.Walking)
-        {
-            rb.useGravity = true;
-            sphereCollider.isTrigger = false;
-        }
-
-        state = _state;
-        return state;
-    }
-
-    bool IsOnLadder()
+    private bool IsOnLadder()
     {
         Collider[] ladderColliders = Physics.OverlapSphere(feetPosition, 0.01f, LadderMask);
 
         return ladderColliders.Length > 0;
     }
 
-    bool IsGrounded()
+    private bool IsGrounded()
     {
         Collider[] galleryColliders = Physics.OverlapSphere(feetPosition, 0.01f, GalleryMask);
 
         return galleryColliders.Length > 0;
     }
 
-    void UpdateState()
+    private void UpdateState()
     {
         if(IsOnLadder() && yMovement != 0)
         {
@@ -158,7 +161,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void RotateMesh()
+    private void RotateMesh()
     {
         float xVel = rb.velocity.x;
         if(Mathf.Abs(xVel) < 1f)
