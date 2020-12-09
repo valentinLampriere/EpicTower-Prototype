@@ -13,6 +13,7 @@ public class TriggerButton : MonoBehaviour
             Activated = true;
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))

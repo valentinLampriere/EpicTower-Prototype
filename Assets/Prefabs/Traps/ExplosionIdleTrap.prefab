@@ -127,4 +127,3 @@ MonoBehaviour:
   BaseDamage: 30
   DamageCoefficient: 40
   PushForce: 15
-  BlownUp: 0
