@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public RoomController roomController;
 
     [SerializeField]
-    private List<IdleTrapAbstract> IdleTraps = new List<IdleTrapAbstract>();
+    private List<AbstractIdleTrap> IdleTraps = new List<AbstractIdleTrap>();
     private int currentTrap = 0;
 
     [SerializeField]

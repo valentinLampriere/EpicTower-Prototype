@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class IdleTrapAbstract : MonoBehaviour
+public abstract class AbstractIdleTrap : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {

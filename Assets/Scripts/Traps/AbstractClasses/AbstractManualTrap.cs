@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ActiveTrapAbstract : MonoBehaviour
+public abstract class AbstractManualTrap : MonoBehaviour
 {
     [Range(0f, 100f)]
     public float CustomCooldown = 10f;

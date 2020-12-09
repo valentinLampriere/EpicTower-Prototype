@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageIdleTrap : IdleTrapAbstract
+public class DamageIdleTrap : AbstractIdleTrap
 {
     [Range(0f, 100f)]
     public float Damage;

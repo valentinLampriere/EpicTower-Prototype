@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretTrap : ActiveTrapAbstract
+public class TurretTrap : AbstractManualTrap
 {    
     public Turret TurretObject;
 

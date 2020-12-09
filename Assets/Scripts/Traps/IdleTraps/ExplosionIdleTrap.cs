@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosionIdleTrap : IdleTrapAbstract
+public class ExplosionIdleTrap : AbstractIdleTrap
 {
     [SerializeField]
     private int EnemiesRequirement = -1;

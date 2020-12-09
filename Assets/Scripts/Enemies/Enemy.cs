@@ -11,6 +11,9 @@ public abstract class Enemy : MonoBehaviour {
 
     [SerializeField]
     private float Health = 200f;
+    [SerializeField]
+    private float currentSpeed = 0f; // just for debug purposes
+    
     private float oldSpeed = 0f;
 
     protected virtual void Awake()
@@ -28,6 +31,8 @@ public abstract class Enemy : MonoBehaviour {
         if (HasReachedEnd() || Health <= 0) {
             Destroy(gameObject);
         }
+
+        currentSpeed = Agent.speed;
     }
 
     protected bool HasReachedEnd()
@@ -67,7 +72,7 @@ public abstract class Enemy : MonoBehaviour {
         Agent.speed *= incomingMultiplier;
     }
 
-    public void ReverseSpeed()
+    public void RestoreSpeed()
     {
         Agent.speed = oldSpeed;
     }

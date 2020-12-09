@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlowIdleTrap : AbstractIdleTrap
+public class FrostAutomaticRoom : AbstractAutomaticRoom
 {
     [Range(0f, 100f)]
     public float Slow;

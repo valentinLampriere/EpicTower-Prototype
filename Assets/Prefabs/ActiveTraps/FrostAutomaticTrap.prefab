@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 5576018143861011475}
   - component: {fileID: 6323040737358731539}
   - component: {fileID: 7894241527245128948}
+  - component: {fileID: 3023197959315065745}
   m_Layer: 9
   m_Name: FrostAutomaticTrap
   m_TagString: Room
@@ -193,6 +194,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3023197959315065745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405353537503823433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd8d4b1cc52bac46b6b5858c2e5bfab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Slow: 50
 --- !u!1 &2844478094575153457
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +696,7 @@ PrefabInstance:
     - target: {fileID: 1448642627395234769, guid: 28ae600fdf187884caac085d2e690772,
         type: 3}
       propertyPath: m_Name
-      value: IdleSlowTrap
+      value: FrostSurface
       objectReference: {fileID: 0}
     - target: {fileID: 3690580108605928516, guid: 28ae600fdf187884caac085d2e690772,
         type: 3}
@@ -749,7 +763,8 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 96ee44c68c55a59408976bf27aa39cd2, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 142224856, guid: 28ae600fdf187884caac085d2e690772, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 28ae600fdf187884caac085d2e690772, type: 3}
 --- !u!4 &1300396153320457377 stripped
 Transform:
