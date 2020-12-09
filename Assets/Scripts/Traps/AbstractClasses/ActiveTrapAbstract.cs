@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ActiveTrapAbstract : MonoBehaviour
 {
-    private void Update()
+    protected virtual void Update()
     {
         if (TrapTriggered())
         {
