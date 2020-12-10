@@ -14,6 +14,13 @@ public abstract class Enemy : MonoBehaviour
     
     private float oldSpeed = 0f;
 
+    [SerializeField]
+    private float valueGold = 10.0f; //how much gold we earn
+
+    [SerializeField]
+    private float damageHP = 30.0f;
+
+
     protected virtual void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
@@ -26,12 +33,22 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (HasReachedEnd() || Health <= 0)
+        if (HasReachedEnd() || !Alive())
         {
             Destroy(gameObject);
         }
 
         currentSpeed = Agent.speed;
+    }
+
+    protected bool Alive()
+    {
+        bool alive = Health >= 0;
+        if(!alive)
+        {
+            MGR_Game.Instance.EarnGold(valueGold);
+        }
+        return alive;          
     }
 
     protected bool HasReachedEnd()
@@ -42,6 +59,7 @@ public abstract class Enemy : MonoBehaviour
             {
                 if (Agent.hasPath || Agent.velocity.sqrMagnitude < 1f)
                 {
+                    MGR_Game.Instance.TakeDamage(damageHP);
                     return true;
                 }
             }

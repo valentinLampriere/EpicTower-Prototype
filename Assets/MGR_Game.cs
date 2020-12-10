@@ -31,11 +31,33 @@ public class MGR_Game : MonoBehaviour
     {
     }
 
-    public void ModifyPV(float dmg)
+    ///<summary> Add hit points </summary>
+    public void Heal(float dmg)
     {
-        fHP += dmg;
+        ModifyHP(dmg);
+    }
+
+    ///<summary> Remove hit points </summary>
+    public void TakeDamage(float dmg) 
+    {
+        ModifyHP(-dmg);
+    }
+
+    void ModifyHP(float hp)
+    {
+        fHP += hp;
         fHP = Mathf.Clamp(fHP, 0, fMaxHP);
         MGR_Canvas.Instance.UpdateHPUI();
+        CheckGameover();
+    }
+
+
+    void CheckGameover()
+    {
+        if(fHP <=0)
+        {
+            Debug.Log("VOUS ETES MORT WOW");
+        }
     }
 
     public void BuyButton(float cost)
@@ -47,8 +69,7 @@ public class MGR_Game : MonoBehaviour
     {
         if (fGolds - cost > 0)
         {
-            fGolds -= cost;
-            MGR_Canvas.Instance.UpdateGoldUI();
+            ModifyGold(-cost);
             return true;
         }
         else
@@ -56,5 +77,18 @@ public class MGR_Game : MonoBehaviour
             Debug.Log("Pas assez de thunes");
             return false;
         }
+    }
+
+
+    public void EarnGold(float gold)
+    {
+        ModifyGold(gold);
+    }
+
+
+    void ModifyGold(float g)
+    {
+        fGolds += g;
+        MGR_Canvas.Instance.UpdateGoldUI();
     }
 }
