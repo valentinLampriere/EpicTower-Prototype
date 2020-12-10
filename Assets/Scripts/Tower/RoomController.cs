@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -41,7 +39,7 @@ public class RoomController : MonoBehaviour
         gatewayGO.transform.localScale = new Vector3(gatewayGO.transform.localScale.x, gatewayLength, gatewayGO.transform.localScale.z);
     }
 
-    void CreateHorizontalLadder(Room downRoom, Room upRoom)
+    private void CreateHorizontalLadder(Room downRoom, Room upRoom)
     {
         float ladderAnchorX = downRoom.CenterPosition.x < upRoom.CenterPosition.x ?
             downRoom.CenterPosition.x + (downRoom.Width / 2) - 0.75f : downRoom.CenterPosition.x - (downRoom.Width / 2) + 0.75f;
@@ -60,7 +58,7 @@ public class RoomController : MonoBehaviour
         links.UpdateLink();
     }
 
-    void CreateHorizontalGalleryGateway(Room downRoom, Room upRoom)
+    private void CreateHorizontalGalleryGateway(Room downRoom, Room upRoom)
     {
         float gatewayLeftX;
         float gatewayRightX;
@@ -89,7 +87,7 @@ public class RoomController : MonoBehaviour
         gatewayGO.transform.localScale = new Vector3(gatewayGO.transform.localScale.x, gatewayLength, gatewayGO.transform.localScale.z);
     }
 
-    void CreateHorizontalGalleryLadder(Room downRoom, Room upRoom)
+    private void CreateHorizontalGalleryLadder(Room downRoom, Room upRoom)
     {
         float ladderAnchorX = downRoom.CenterPosition.x < upRoom.CenterPosition.x ?
             upRoom.CenterPosition.x - upRoom.Width / 2 + 0.75f : upRoom.CenterPosition.x + upRoom.Width / 2 - 0.75f;
@@ -101,44 +99,42 @@ public class RoomController : MonoBehaviour
         ladderPos += new Vector3(0, 0.05f, 0);
         float ladderLength = (upAnchor.y - downAnchor.y);
 
-
         GameObject ladderGO = Instantiate(ladderPlayerPrefab, ladderPos, Quaternion.identity);
         ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
     }
 
-    void RemoveWallFromRoom(Room room, string sideWall)
+    private void RemoveWallFromRoom(Room room, string sideWall)
     {
         Transform wallTransform = room.GetComponent<ChildSearcher>().FindChildByName(sideWall);
-        if(wallTransform != null)
+        if (wallTransform != null)
         {
             Destroy(wallTransform.gameObject);
         }
     }
 
-    void CheckForDoor(Room room)
+    private void CheckForDoor(Room room)
     {
-        if(!room.HasHorizontalNeighbourOn(false)) // no more horizontal neighbour on right
+        if (!room.HasHorizontalNeighbourOn(false)) // no more horizontal neighbour on right
         {
-            CreateDoor(room, false); 
+            CreateDoor(room, false);
         }
     }
 
-    void TryToLinkDoor(Room room)
+    private void TryToLinkDoor(Room room)
     {
-        foreach(Tuple<Room, bool> neighRoom in room.NeighbourRooms)
+        foreach (Tuple<Room, bool> neighRoom in room.NeighbourRooms)
         {
-
         }
     }
 
-    void CreateDoor(Room room, bool left)
+    private void CreateDoor(Room room, bool left)
     {
         float doorX = left ? room.CenterPosition.x - room.Width / 2 + 1 : room.CenterPosition.x + room.Width / 2 - 1;
         Vector3 doorPosition = new Vector3(doorX, room.CenterPosition.y - room.Height / 2 + 0.5f, -1);
         Instantiate(doorPrefab, doorPosition, Quaternion.identity);
     }
 
-    void CreateVerticalPlayerLadder(Room downRoom, Room upRoom, float posX)
+    private void CreateVerticalPlayerLadder(Room downRoom, Room upRoom, float posX)
     {
         Vector3 ladderPos = new Vector3(
             posX,
@@ -151,7 +147,7 @@ public class RoomController : MonoBehaviour
         ladderGO.transform.localScale = new Vector3(ladderGO.transform.localScale.x, ladderLength, ladderGO.transform.localScale.z);
     }
 
-    void CreateVerticalEnemyLadder(Room downRoom, Room upRoom, float posX)
+    private void CreateVerticalEnemyLadder(Room downRoom, Room upRoom, float posX)
     {
         Vector3 ladderPos = new Vector3(
             posX,
@@ -167,7 +163,7 @@ public class RoomController : MonoBehaviour
         links.UpdateLink();
     }
 
-    int NeighbourRelativePosition(Room room, Room neighRoom) // returns 0 if horizontal neighbour, 1 if vertical
+    private int NeighbourRelativePosition(Room room, Room neighRoom) // returns 0 if horizontal neighbour, 1 if vertical
     {
         Vector3 neighRoomFirstVertice = neighRoom.CenterPosition - new Vector3(neighRoom.Width / 2, neighRoom.Height / 2, 0);
         Vector3 neighRoomLastVertice = neighRoom.CenterPosition + new Vector3(neighRoom.Width / 2, neighRoom.Height / 2, 0);
@@ -176,7 +172,7 @@ public class RoomController : MonoBehaviour
         {
             return 0;
         }
-        else if(neighRoomFirstVertice.y == room.CenterPosition.y + (room.Height / 2) || neighRoomLastVertice.y == room.CenterPosition.y - (room.Height / 2))
+        else if (neighRoomFirstVertice.y == room.CenterPosition.y + (room.Height / 2) || neighRoomLastVertice.y == room.CenterPosition.y - (room.Height / 2))
         {
             return 1;
         }
@@ -245,12 +241,12 @@ public class RoomController : MonoBehaviour
                     CreateHorizontalGalleryGateway(room, neighRoom);
                 }
 
-                if(room.CenterPosition.x < neighRoom.CenterPosition.x)
+                if (room.CenterPosition.x < neighRoom.CenterPosition.x)
                 {
                     RemoveWallFromRoom(room, "RightWall");
                     RemoveWallFromRoom(neighRoom, "LeftWall");
                 }
-                else if(room.CenterPosition.x > neighRoom.CenterPosition.x)
+                else if (room.CenterPosition.x > neighRoom.CenterPosition.x)
                 {
                     RemoveWallFromRoom(neighRoom, "RightWall");
                     RemoveWallFromRoom(room, "LeftWall");
@@ -279,7 +275,7 @@ public class RoomController : MonoBehaviour
 
     public void AddRoomToHisNeighbours(Room room)
     {
-        foreach (Tuple<Room,bool> neighRoomTuple in room.NeighbourRooms)
+        foreach (Tuple<Room, bool> neighRoomTuple in room.NeighbourRooms)
         {
             neighRoomTuple.Item1.NeighbourRooms.Add(Tuple.Create(room, false));
         }

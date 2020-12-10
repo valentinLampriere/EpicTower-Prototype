@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -13,7 +11,7 @@ public class PlayerController : MonoBehaviour
         Climbing
     }
 
-    PlayerState state = PlayerState.Walking;
+    private PlayerState state = PlayerState.Walking;
 
     public CameraController cameraController;
     public CanvasController canvasController;
@@ -69,9 +67,11 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Walking:
                 rb.velocity = new Vector3(xMovement * moveSpeed, rb.velocity.y, rb.velocity.z);
                 break;
+
             case PlayerState.Climbing:
                 rb.velocity = new Vector3(0, yMovement * climbSpeed, 0);
                 break;
+
             default:
                 ChangeState(PlayerState.Walking);
                 break;
@@ -105,25 +105,17 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1))
-        {
-            cameraController.ZoomIn(transform.position);
-        }
+        cameraController.trPlayer = transform;
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            cameraController.ZoomOut();
-        }
-
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            if(currentRoom != null)
+            if (currentRoom != null)
             {
                 roomController.TryToCreateVerticalLadder(currentRoom, false, transform.position.x);
             }
         }
-        
-        if(Input.GetKeyDown(KeyCode.M))
+
+        if (Input.GetKeyDown(KeyCode.M))
         {
             if (currentRoom != null)
             {
@@ -148,15 +140,15 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if(IsOnLadder() && yMovement != 0)
+        if (IsOnLadder() && yMovement != 0)
         {
             ChangeState(PlayerState.Climbing);
         }
-        if(IsGrounded() && xMovement != 0)
+        if (IsGrounded() && xMovement != 0)
         {
             ChangeState(PlayerState.Walking);
         }
-        if(!IsOnLadder())
+        if (!IsOnLadder())
         {
             ChangeState(PlayerState.Walking);
         }
@@ -183,8 +175,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other) {
-        
+    private void OnTriggerExit(Collider other)
+    {
         if (other.CompareTag("Room"))
         {
             currentRoom = null;

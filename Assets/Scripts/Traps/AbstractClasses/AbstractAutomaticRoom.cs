@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class AbstractAutomaticRoom : MonoBehaviour
 {
@@ -11,6 +9,7 @@ public abstract class AbstractAutomaticRoom : MonoBehaviour
             ActionOnEnter(other.GetComponent<Enemy>());
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Enemy"))
