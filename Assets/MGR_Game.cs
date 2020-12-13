@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class MGR_Game : MonoBehaviour
 {
     private static MGR_Game pInstance = null;
@@ -57,7 +57,22 @@ public class MGR_Game : MonoBehaviour
         if(fHP <=0)
         {
             Debug.Log("VOUS ETES MORT WOW");
+            GameOver();
         }
+
+    }
+
+
+    void GameOver()
+    {
+        Time.timeScale = 0;
+        MGR_Canvas.Instance.GODeathPanel.SetActive(true);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void BuyButton(float cost)
@@ -91,4 +106,8 @@ public class MGR_Game : MonoBehaviour
         fGolds += g;
         MGR_Canvas.Instance.UpdateGoldUI();
     }
+
+
+
+
 }

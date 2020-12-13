@@ -10,6 +10,8 @@ public class MGR_Canvas : MonoBehaviour
     public Slider sliderHP;
     public Text textGold;
 
+    public GameObject GODeathPanel;
+
 
     // Awake is called before Start
     private void Awake()
@@ -19,6 +21,8 @@ public class MGR_Canvas : MonoBehaviour
         else if (pInstance != this)
             //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
             Destroy(gameObject);
+
+        GODeathPanel.SetActive(false);
     }
 
     private void Start()
