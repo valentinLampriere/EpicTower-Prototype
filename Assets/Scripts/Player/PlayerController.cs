@@ -81,55 +81,47 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (MGR_Game.Instance.GetPhase() == Phase.Phase2)
+        xMovement = Input.GetAxisRaw("Horizontal");
+        yMovement = Input.GetAxisRaw("Vertical");
+        feetPosition = transform.position - new Vector3(0, transform.localScale.y * 1.25f, 0);
+        UpdateState();
+        RotateMesh();
+
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            xMovement = Input.GetAxisRaw("Horizontal");
-            yMovement = Input.GetAxisRaw("Vertical");
-            feetPosition = transform.position - new Vector3(0, transform.localScale.y * 1.25f, 0);
-            UpdateState();
-            RotateMesh();
-
-            if (Input.GetKeyDown(KeyCode.A))
+            currentTrap += 1;
+            if (currentTrap > IdleTraps.Count - 1)
             {
-                currentTrap += 1;
-                if (currentTrap > IdleTraps.Count - 1)
-                {
-                    currentTrap = 0;
-                }
-
-                canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
+                currentTrap = 0;
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                if (currentRoom)
-                {
-                    currentRoom.PlaceTrap(IdleTraps[currentTrap].gameObject);
-                }
-            }
+            canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
+        }
 
-            cameraController.trPlayer = transform;
-
-            if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (currentRoom)
             {
-                if (currentRoom != null)
-                {
-                    roomController.TryToCreateVerticalLadder(currentRoom, false, transform.position.x);
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                if (currentRoom != null)
-                {
-                    roomController.TryToCreateVerticalLadder(currentRoom, true, transform.position.x);
-                }
+                currentRoom.PlaceTrap(IdleTraps[currentTrap].gameObject);
             }
         }
-        else
+
+        cameraController.trPlayer = transform;
+
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            xMovement = 0;
-            yMovement = 0;
+            if (currentRoom != null)
+            {
+                roomController.TryToCreateVerticalLadder(currentRoom, false, transform.position.x);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (currentRoom != null)
+            {
+                roomController.TryToCreateVerticalLadder(currentRoom, true, transform.position.x);
+            }
         }
     }
 
