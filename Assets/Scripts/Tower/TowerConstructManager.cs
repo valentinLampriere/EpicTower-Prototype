@@ -7,6 +7,10 @@ public class TowerConstructManager : MonoBehaviour
     [SerializeField] private GameObject roomPreviewPrefab = null;
     [SerializeField] private GameObject roomObjectPrefab = null;
     [SerializeField] private NavMeshSurface navMeshSurface = null;
+    [SerializeField] private GameObject[] roomsObjectsPrefabs = null;
+    [SerializeField] private GameObject[] roomsPreviewPrefabs = null;
+
+    public int currentRoom;
 
     private Camera mainCamera;
     private Grid grid;
@@ -19,6 +23,10 @@ public class TowerConstructManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        if (roomsObjectsPrefabs.Length > 0)
+            currentRoom = 0;
+        else
+            Debug.LogError("Aucune Salle !!!");
         mainCamera = Camera.main;
         grid = GetComponent<Grid>();
         roomController = GetComponent<RoomController>();
@@ -29,28 +37,39 @@ public class TowerConstructManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (MGR_Game.Instance.GetPhase() == Phase.Phase1)
         {
-            if (activePreview)
+            if (Input.GetMouseButtonDown(0))
             {
-                CreateRoom();
+                if (activePreview)
+                {
+                    if (MGR_Game.Instance.Buy(10))
+                    {
+                        CreateRoom();
+                    }
+                }
+                else
+                {
+                    activePreview = true;
+                    CreateRoomPreview();
+                }
             }
-            else
+
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                activePreview = true;
-                CreateRoomPreview();
+                activePreview = false;
+                DestroyRoomPreview();
+            }
+
+            if (roomPreviewGO != null && activePreview)
+            {
+                roomPreviewGO.transform.position = grid.SnapToGrid(GetMousePositionInWorld());
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+        else
         {
             activePreview = false;
             DestroyRoomPreview();
-        }
-
-        if (roomPreviewGO != null && activePreview)
-        {
-            roomPreviewGO.transform.position = grid.SnapToGrid(GetMousePositionInWorld());
         }
     }
 
@@ -105,5 +124,10 @@ public class TowerConstructManager : MonoBehaviour
     public void BuildNavMesh()
     {
         navMeshSurface.BuildNavMesh();
+    }
+
+    public void SetCurrentRoom(int iRoom)
+    {
+        currentRoom = Mathf.Clamp(iRoom, 0, roomsObjectsPrefabs.Length - 1);
     }
 }

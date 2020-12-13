@@ -12,7 +12,7 @@ public class EnemiesManager : MonoBehaviour
     public void ThrowNextWave()
     {
         waves[0].Init(transform.position, Destination.position);
-
+        MGR_Game.Instance.SetPhase2();
         //waves.RemoveAt(0);
     }
 }

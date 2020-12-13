@@ -11,6 +11,7 @@ public class MGR_Canvas : MonoBehaviour
     public Text textGold;
 
     public GameObject GODeathPanel;
+    public GameObject GORoomPanel;
 
 
     // Awake is called before Start
@@ -43,6 +44,18 @@ public class MGR_Canvas : MonoBehaviour
     public void UpdateGoldUI()
     {
         textGold.text = MGR_Game.Instance.fGolds.ToString() + " Gold";
+    }
+
+    public void UpdateRoomsPanel()
+    {
+        if(MGR_Game.Instance.GetPhase() == Phase.Phase1)
+        {
+            GORoomPanel.SetActive(true);
+        }
+        else
+        {
+            GORoomPanel.SetActive(false);
+        }
     }
 
 

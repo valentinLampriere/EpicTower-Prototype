@@ -1,9 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+
+public enum Phase
+{
+    Phase1,
+    Phase2  
+}
 public class MGR_Game : MonoBehaviour
 {
     private static MGR_Game pInstance = null;
     public static MGR_Game Instance { get { return pInstance; } }
+
+
+    [SerializeField]
+    private Phase currentPhase;
 
     public float fMaxHP;
     public float fHP;
@@ -19,6 +29,8 @@ public class MGR_Game : MonoBehaviour
             Destroy(gameObject);
 
         fHP = fMaxHP;
+
+        currentPhase = Phase.Phase1;
     }
 
     // Start is called before the first frame update
@@ -107,7 +119,22 @@ public class MGR_Game : MonoBehaviour
         MGR_Canvas.Instance.UpdateGoldUI();
     }
 
+    public void SetPhase1()
+    {
+        currentPhase = Phase.Phase1;
+        MGR_Canvas.Instance.UpdateRoomsPanel();
+    }
+
+    public void SetPhase2()
+    {
+        currentPhase = Phase.Phase2;
+        MGR_Canvas.Instance.UpdateRoomsPanel();
+    }
 
 
+    public Phase GetPhase()
+    { 
+        return currentPhase;
+    }
 
 }

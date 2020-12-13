@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public LayerMask GalleryMask;
     public LayerMask LadderMask;
+
     public enum PlayerState
     {
         Walking,
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private List<AbstractIdleTrap> IdleTraps = new List<AbstractIdleTrap>();
+
     private int currentTrap = 0;
 
     [SerializeField]
@@ -31,12 +33,11 @@ public class PlayerController : MonoBehaviour
     private float yMovement;
     private Vector3 feetPosition;
 
-    Rigidbody rb;
-    SphereCollider sphereCollider;
+    private Rigidbody rb;
+    private SphereCollider sphereCollider;
 
     public PlayerState ChangeState(PlayerState _state)
     {
-
         if (state == PlayerState.Walking && _state == PlayerState.Climbing)
         {
             rb.useGravity = false;
@@ -80,46 +81,49 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        xMovement = Input.GetAxisRaw("Horizontal");
-        yMovement = Input.GetAxisRaw("Vertical");
-        feetPosition = transform.position - new Vector3(0, transform.localScale.y * 1.25f, 0);
-        UpdateState();
-        RotateMesh();
-
-        if (Input.GetKeyDown(KeyCode.A))
+        if (MGR_Game.Instance.GetPhase() == Phase.Phase2)
         {
-            currentTrap += 1;
-            if (currentTrap > IdleTraps.Count - 1)
+            xMovement = Input.GetAxisRaw("Horizontal");
+            yMovement = Input.GetAxisRaw("Vertical");
+            feetPosition = transform.position - new Vector3(0, transform.localScale.y * 1.25f, 0);
+            UpdateState();
+            RotateMesh();
+
+            if (Input.GetKeyDown(KeyCode.A))
             {
-                currentTrap = 0;
+                currentTrap += 1;
+                if (currentTrap > IdleTraps.Count - 1)
+                {
+                    currentTrap = 0;
+                }
+
+                canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
             }
 
-            canvasController.ChangeIdleTrap(IdleTraps[currentTrap].GetComponent<Renderer>());
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (currentRoom)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                currentRoom.PlaceTrap(IdleTraps[currentTrap].gameObject);
+                if (currentRoom)
+                {
+                    currentRoom.PlaceTrap(IdleTraps[currentTrap].gameObject);
+                }
             }
-        }
 
-        cameraController.trPlayer = transform;
+            cameraController.trPlayer = transform;
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (currentRoom != null)
+            if (Input.GetKeyDown(KeyCode.L))
             {
-                roomController.TryToCreateVerticalLadder(currentRoom, false, transform.position.x);
+                if (currentRoom != null)
+                {
+                    roomController.TryToCreateVerticalLadder(currentRoom, false, transform.position.x);
+                }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            if (currentRoom != null)
+            if (Input.GetKeyDown(KeyCode.M))
             {
-                roomController.TryToCreateVerticalLadder(currentRoom, true, transform.position.x);
+                if (currentRoom != null)
+                {
+                    roomController.TryToCreateVerticalLadder(currentRoom, true, transform.position.x);
+                }
             }
         }
     }
@@ -157,7 +161,7 @@ public class PlayerController : MonoBehaviour
     private void RotateMesh()
     {
         float xVel = rb.velocity.x;
-        if(Mathf.Abs(xVel) < 1f)
+        if (Mathf.Abs(xVel) < 1f)
         {
             return;
         }
