@@ -4,8 +4,6 @@ using UnityEngine.AI;
 public class TowerConstructManager : MonoBehaviour
 {
     [SerializeField] private GameObject towerPrefab = null;
-    [SerializeField] private GameObject roomPreviewPrefab = null;
-    [SerializeField] private GameObject roomObjectPrefab = null;
     [SerializeField] private NavMeshSurface navMeshSurface = null;
     [SerializeField] private GameObject[] roomsObjectsPrefabs = null;
     [SerializeField] private GameObject[] roomsPreviewPrefabs = null;
@@ -15,6 +13,8 @@ public class TowerConstructManager : MonoBehaviour
 
     private Camera mainCamera;
     private Grid grid;
+    private GameObject roomPreviewPrefab = null;
+    private GameObject roomObjectPrefab = null;
     private GameObject roomGO;
     private GameObject roomPreviewGO;
     private RoomController roomController;
@@ -45,11 +45,16 @@ public class TowerConstructManager : MonoBehaviour
                 if (activePreview)
                 {
                     CreateRoom();
+                    activePreview = false;
+                    DestroyRoomPreview();
                 }
                 else
                 {
-                    activePreview = true;
-                    CreateRoomPreview();
+                    if(roomPreviewPrefab != null)
+                    {
+                        activePreview = true;
+                        CreateRoomPreview();
+                    }
                 }
             }
 
@@ -96,6 +101,7 @@ public class TowerConstructManager : MonoBehaviour
     private void DestroyRoomPreview()
     {
         Destroy(roomPreviewGO);
+        roomPreviewPrefab = null;
     }
 
     private void CreateRoom()
@@ -132,5 +138,8 @@ public class TowerConstructManager : MonoBehaviour
         currentRoom = Mathf.Clamp(iRoom, 0, roomsObjectsPrefabs.Length - 1);
         roomObjectPrefab = roomsObjectsPrefabs[currentRoom];
         roomPreviewPrefab = roomsPreviewPrefabs[currentRoom];
+
+        activePreview = true;
+        CreateRoomPreview();
     }
 }
