@@ -1329,7 +1329,10 @@ MonoBehaviour:
   - {fileID: 990505599258932578, guid: 54783bda7cc7eef45b104e0c3643eb44, type: 3}
   roomsPreviewPrefabs:
   - {fileID: 5542931255425188740, guid: e932b811306061145b6a2209c2f97989, type: 3}
+  - {fileID: 4743484691330194582, guid: b09832ea63dd48f49a364d130b82793d, type: 3}
+  - {fileID: 990505599258932578, guid: e124e08dc71dbd34a96ef9c515e78d4f, type: 3}
   currentRoom: 0
+  costRoom: 5
 --- !u!4 &841961703
 Transform:
   m_ObjectHideFlags: 0

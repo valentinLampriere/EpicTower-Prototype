@@ -11,6 +11,7 @@ public class TowerConstructManager : MonoBehaviour
     [SerializeField] private GameObject[] roomsPreviewPrefabs = null;
 
     public int currentRoom;
+    public int costRoom;
 
     private Camera mainCamera;
     private Grid grid;
@@ -43,10 +44,7 @@ public class TowerConstructManager : MonoBehaviour
             {
                 if (activePreview)
                 {
-                    if (MGR_Game.Instance.Buy(10))
-                    {
-                        CreateRoom();
-                    }
+                    CreateRoom();
                 }
                 else
                 {
@@ -107,9 +105,12 @@ public class TowerConstructManager : MonoBehaviour
 
         if (grid.CanConstructRoom(roomCenter, roomPrefab))
         {
-            roomGO = Instantiate(roomObjectPrefab, roomCenter, Quaternion.identity);
-            Room room = roomGO.GetComponent<Room>();
-            SetupRoom(roomCenter, room);
+            if (MGR_Game.Instance.Buy(costRoom))
+            {
+                roomGO = Instantiate(roomObjectPrefab, roomCenter, Quaternion.identity);
+                Room room = roomGO.GetComponent<Room>();
+                SetupRoom(roomCenter, room);
+            }
         }
     }
 
@@ -129,5 +130,7 @@ public class TowerConstructManager : MonoBehaviour
     public void SetCurrentRoom(int iRoom)
     {
         currentRoom = Mathf.Clamp(iRoom, 0, roomsObjectsPrefabs.Length - 1);
+        roomObjectPrefab = roomsObjectsPrefabs[currentRoom];
+        roomPreviewPrefab = roomsPreviewPrefabs[currentRoom];
     }
 }

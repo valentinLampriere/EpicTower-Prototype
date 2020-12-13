@@ -131,3 +131,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 100
+  currentSpeed: 0
+  valueGold: 10
+  damageHP: 0

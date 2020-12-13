@@ -11,8 +11,11 @@ public class Wave : MonoBehaviour
     private Vector3 destination;
     private List<Enemy> enemiesToSpawn;
 
+    private int countEnemies;
+
     public void Init(Vector3 src, Vector3 dest)
     {
+        countEnemies = enemies.Count;
         source = src;
         destination = dest;
         enemiesToSpawn = new List<Enemy>(enemies);
@@ -30,5 +33,18 @@ public class Wave : MonoBehaviour
             yield return new WaitForSeconds(intervalBetweenEnemies);
             StartCoroutine(SetIntervalEnemies());
         }
+
     }
-}
+    private void Update()
+    {
+        
+    }
+    public void CheckEndWave()
+    {
+        countEnemies--;
+        if(countEnemies <= 0)
+        {
+            MGR_Game.Instance.SetPhase1();
+        }
+    }
+  }

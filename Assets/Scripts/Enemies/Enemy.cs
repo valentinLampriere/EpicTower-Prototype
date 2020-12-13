@@ -18,7 +18,7 @@ public abstract class Enemy : MonoBehaviour
     private float valueGold = 10.0f; //how much gold we earn
 
     [SerializeField]
-    private float damageHP = 30.0f;
+    private float damageHP = 0.0f;
 
 
     protected virtual void Awake()
@@ -36,6 +36,7 @@ public abstract class Enemy : MonoBehaviour
         if (HasReachedEnd() || !Alive())
         {
             Destroy(gameObject);
+            transform.parent.GetComponent<Wave>().CheckEndWave();
         }
 
         currentSpeed = Agent.speed;
