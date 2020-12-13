@@ -15,4 +15,6 @@ public class EnemiesManager : MonoBehaviour
         MGR_Game.Instance.SetPhase2();
         //waves.RemoveAt(0);
     }
+
+
 }

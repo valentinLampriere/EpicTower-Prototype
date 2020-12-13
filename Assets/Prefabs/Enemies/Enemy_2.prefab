@@ -133,4 +133,4 @@ MonoBehaviour:
   Health: 100
   currentSpeed: 0
   valueGold: 10
-  damageHP: 0
+  damageHP: 5

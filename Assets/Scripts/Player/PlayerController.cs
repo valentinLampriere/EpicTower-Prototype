@@ -126,6 +126,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            xMovement = 0;
+            yMovement = 0;
+        }
     }
 
     private bool IsOnLadder()
