@@ -457,8 +457,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 2}
-  m_Center: {x: 0, y: 0, z: -0.5}
+  m_Size: {x: 3, y: 3, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4193430537042730206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,13 +483,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12e70c65ded0c9f43b53943969cf172d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 10
   CustomCooldown: 10
   TimeActive: 5
-  BaseRoom: {fileID: 5901287209009085890}
-  TurretObject: {fileID: 7462800566732451517}
+  Effect: 10
   Trigger: {fileID: 7924394745785373890}
   TimeUntilActive: 0
+  TurretObject: {fileID: 7462800566732451517}
 --- !u!54 &1186398521
 Rigidbody:
   m_ObjectHideFlags: 0

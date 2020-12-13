@@ -30,7 +30,7 @@ public class Wave : MonoBehaviour
         enemiesToSpawn.RemoveAt(0);
 
         if (enemiesToSpawn.Count > 0) {
-            yield return new WaitForSeconds(intervalBetweenEnemies);
+            yield return new WaitForSeconds(Random.Range(intervalBetweenEnemies, intervalBetweenEnemies * 5f));
             StartCoroutine(SetIntervalEnemies());
         }
 
