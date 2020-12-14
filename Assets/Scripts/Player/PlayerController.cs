@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviour
                 break;
 
             default:
-                ChangeState(PlayerState.Walking);
                 break;
         }
     }
