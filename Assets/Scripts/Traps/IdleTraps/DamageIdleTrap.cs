@@ -17,6 +17,6 @@ public class DamageIdleTrap : AbstractIdleTrap
 
     protected override void ActionOnStay(Enemy enemy)
     {
-        enemy.TakeDamage(Damage);
+        enemy.TakeDamage(Damage * Time.deltaTime);
     }
 }
